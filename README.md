@@ -27,9 +27,8 @@ MedicalEnvelopeProject/
 │   └── InsuranceSystemApp.java  // 로그인 후 역할에 따라 기능 분기되는 메인 실행 클래스
 │
 ├── data/                        # 파일 저장 디렉토리 (향후 사용 예정)
-│   ├── records/                 // 병원 진료기록 zip 저장
-│   ├── envelopes/               // 전자봉투 파일 저장
-│   └── submissions/             // 보험청구 제출 데이터 저장
+│
+├── crypto/                      # 암호화 관련
 │
 └── README.md                    // 프로젝트 설명 문서
 ```
