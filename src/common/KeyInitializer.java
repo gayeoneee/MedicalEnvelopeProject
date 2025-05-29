@@ -8,18 +8,18 @@ import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Map;
-
+import java.util.Collection;
 
 // 각 역할(Role)별 사용자의 공개키/개인키를 자동 생성하여 지정된 디렉토리에 저장하는 초기화 유틸
 public class KeyInitializer {
 	public static void main(String[] args) throws Exception {
 		// UserStore에서 직접 사용자 목록을 가져옴
-        Map<String, User> allUsers = UserStore.getAllUsers();
+		Collection<User> allUsers = UserStore.getAllUsers();
 		
-        for (Map.Entry<String, User> entry : allUsers.entrySet()) {
-        	
-            String userId = entry.getKey();
-            Role role = entry.getValue().getRole();
+		for (User user : allUsers) {
+			
+            String userId = user.getId();
+            Role role = user.getRole();
             
             generateAndSaveKeyPair(userId, role);
         }
