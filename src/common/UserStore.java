@@ -15,7 +15,7 @@ public class UserStore {
         users.put("nurse1", new User("nurse1", "abcd", Role.NURSE));
 
         // 환자
-        users.put("patient1", new User("patient1", "p123", Role.PATIENT, "P2024-001"));
+        users.put("patient1", new User("patient1", "p123", Role.PATIENT, "P2025_001"));
 
         // 보험사 관계자
         users.put("under1", new User("under1", "u111", Role.UNDERWRITER));
@@ -24,5 +24,9 @@ public class UserStore {
     
     public static User getUserById(String id) {
         return users.get(id);
+    }
+    
+    public static Map<String, User> getAllUsers() {
+        return users;
     }
 }
