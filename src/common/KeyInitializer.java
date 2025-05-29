@@ -1,0 +1,70 @@
+package common;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.util.Map;
+
+
+// 각 역할(Role)별 사용자의 공개키/개인키를 자동 생성하여 지정된 디렉토리에 저장하는 초기화 유틸
+public class KeyInitializer {
+	public static void main(String[] args) throws Exception {
+		// UserStore에서 직접 사용자 목록을 가져옴
+        Map<String, User> allUsers = UserStore.getAllUsers();
+		
+        for (Map.Entry<String, User> entry : allUsers.entrySet()) {
+        	
+            String userId = entry.getKey();
+            Role role = entry.getValue().getRole();
+            
+            generateAndSaveKeyPair(userId, role);
+        }
+
+        System.out.println("✅ 모든 사용자 키가 역할별 디렉토리에 저장되었습니다.");
+	}
+	
+	private static void generateAndSaveKeyPair(String userId, Role role) throws Exception {
+		KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
+        keyPairGen.initialize(1024); 
+        KeyPair keypair = keyPairGen.generateKeyPair();
+
+        PublicKey publicKey = keypair.getPublic();
+        PrivateKey privateKey = keypair.getPrivate();
+        
+        // "해당 role (소문자 변환 후)  + 사용자 id " 으로 디렉토리 생성
+        String dirPath = "src/keys/" + role.name().toLowerCase() + "/" + userId;
+        new File(dirPath).mkdirs(); // 디렉토리 생성 
+        
+        String publicFilePath = dirPath + "/public.key";
+        String privateFilePath = dirPath + "/private.key";
+        
+        // 공개키 저장
+        FileOutputStream fos = new FileOutputStream(publicFilePath);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(publicKey);
+        oos.close();
+        
+        
+        // 개인키 저장
+        FileOutputStream fos2 = new FileOutputStream(privateFilePath);
+        ObjectOutputStream oos2 = new ObjectOutputStream(fos2);
+        oos2.writeObject(privateKey);
+        oos2.close();
+        
+        // 코드 리팩토링 시 try문 안에 넣기
+        /*
+        try (ObjectOutputStream pubOut = new ObjectOutputStream(new FileOutputStream(dirPath + "/public.key"));
+             ObjectOutputStream priOut = new ObjectOutputStream(new FileOutputStream(dirPath + "/private.key"))) {
+
+            pubOut.writeObject(publicKey);
+            priOut.writeObject(privateKey);
+        }
+        */
+
+        System.out.println("🔑 [" + role.name() + "] 키 생성 완료 → " + dirPath);
+	}
+}
