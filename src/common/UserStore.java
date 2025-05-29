@@ -17,8 +17,9 @@ public class UserStore {
         // 환자
         users.put("patient1", new User("patient1", "p123", Role.PATIENT, "P2024-001"));
 
-        // 보험사
-        users.put("insure1", new User("insure1", "i456", Role.INSURANCE));
+        // 보험사 관계자
+        users.put("under1", new User("under1", "u111", Role.UNDERWRITER));
+        users.put("adjust1", new User("adjust1", "a111", Role.ADJUSTER));
     }
     
     public static User getUserById(String id) {
