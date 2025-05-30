@@ -1,4 +1,4 @@
-package hospitalSystem;
+package hospitalSystem.hospitalService;
 
 import java.io.*;
 import java.util.zip.ZipEntry;

@@ -27,6 +27,10 @@ public class UserStore {
         User patient1 = new User("patient1", "p123", Role.PATIENT, "P2025_001");
         usersById.put("patient1", patient1);
         usersByPatientCode.put(patient1.getPatientCode(), patient1);
+        
+        User patient2 = new User("patient2", "p456", Role.PATIENT, "P2025_002");
+        usersById.put("patient2", patient2);
+        usersByPatientCode.put(patient2.getPatientCode(), patient2);
 
         // 보험사 관계자
         usersById.put("under1", new User("under1", "u111", Role.UNDERWRITER));

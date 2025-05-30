@@ -1,4 +1,4 @@
-package hospitalSystem;
+package hospitalSystem.hospitalService;
 
 import common.KeyManager;
 import common.User;

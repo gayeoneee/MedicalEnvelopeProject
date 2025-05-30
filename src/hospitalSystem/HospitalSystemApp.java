@@ -4,6 +4,9 @@ import common.LoginService;
 import common.Role;
 import common.User;
 import common.UserStore;
+import hospitalSystem.hospitalService.*;
+import hospitalSystem.PatientService.*;
+
 import java.util.Scanner;
 import java.io.File;
 import java.nio.file.*;
@@ -109,6 +112,38 @@ public class HospitalSystemApp {
             case PATIENT:
                 System.out.println("환자 기능 실행 중...");
                 // TODO: 진료기록 열람, 복호화 등
+                
+                // 현재 로그인된 사용자의 ID 가져오기
+                String patientId = user.getId();
+                
+                try {
+                	Scanner scanner = new Scanner(System.in); //try문 안으로 scanner 넣는 거 리팩토링
+                
+                    System.out.print("📌 본인의 환자 식별 코드(Pxxxx_xxx)를 입력하세요: ");
+                    String patientCode = scanner.nextLine();
+                    
+                    // 1. 전자봉투 수신 및 압축 해제
+                    PatientEnvelopeReceiver.receiveEnvelope(patientCode);
+
+                    // 2. 암호화된 진료기록 복호화                    
+                    EnvelopeDecryptor.decryptEnvelope(patientId, patientCode);
+
+                    // 3. 복호화된 ZIP 압축 해제
+                    DecryptedZipExtractor.extractDecryptedRecord(patientCode);
+
+                    // 4. 진단서 및 처방전 열람
+                    DecryptedRecordViewer.viewDecryptedRecord(patientCode);
+
+                    // 5. 보험사로 전자봉투 전송
+                    EnvelopeForwarder.forwardEnvelope(patientCode);
+
+                    System.out.println("✅ 환자: 진료기록 열람 및 보험사 제출 완료!");
+                    
+                }catch (Exception e) {
+                    System.out.println("❌ 오류 발생: " + e.getMessage());
+                }
+                
+                
                 break;
             default:
                 System.out.println("지원하지 않는 역할입니다.");
