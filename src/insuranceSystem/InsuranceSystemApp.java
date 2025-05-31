@@ -56,6 +56,20 @@ public class InsuranceSystemApp {
 	                    System.out.print("📌 환자 식별 코드(Pxxxx_xxx)를 입력하세요: ");
 	                    String patientCode = scanner.nextLine();
 	                    String baseDir = "src/data/insuranceInbox/" + patientCode;
+	                    
+	                    String requestFilePath = "src/data/requests/" + patientCode + "/request.txt";
+	                    String requestedUnderwriterId = null;
+	                    try (Scanner fileScanner = new Scanner(new java.io.File(requestFilePath))) {
+	                        if (fileScanner.hasNextLine()) {
+	                            requestedUnderwriterId = fileScanner.nextLine().trim();
+	                        }
+	                    }
+
+	                    // 요청된 심사관과 로그인한 심사관이 일치하지 않으면 기능 차단
+	                    if (requestedUnderwriterId == null || !requestedUnderwriterId.equals(user.getUnderwriterCode())) {
+	                        System.out.println("❌ 접근 불가: 환자가 지정한 심사관이 아닙니다.");
+	                        return; // 종료
+	                    }
 	
 	                    // 전자봉투 수신 및 압축 해제
 	                    InsuranceRecordReceiver.receiveEnvelope(patientCode);

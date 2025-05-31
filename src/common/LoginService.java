@@ -30,9 +30,14 @@ public class LoginService {
         		if (user.getRole() == Role.PATIENT) {
                     System.out.println("📌 환자 식별자: " + user.getPatientCode());
                 }
-        		
+        		if (user.getRole() == Role.UNDERWRITER) {
+        			System.out.println("📌 심사관 식별자: " + user.getUnderwriterCode());
+        		}
         		return user;
+        	} else if (user.getRole() == Role.UNDERWRITER) {
+        		System.out.println("📌 환자 식별자: " + user.getPatientCode());
         	}
+        		
         	else {
                 System.out.println("⛔ 이 시스템에서 허용되지 않는 역할입니다."); // 해당 사용자는 있지만 이 시스템에서 사용하지 않는 역할일때
             }

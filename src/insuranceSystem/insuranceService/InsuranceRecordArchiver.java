@@ -21,7 +21,7 @@ public class InsuranceRecordArchiver {
             "aes_for_patient.key",
             "aes_for_insurance.key",
             "hash.txt",
-            "record.enc",
+            "/record_" +  patientCode + ".enc",
             "sign_doctor.sig",
             "sign_nurse.sig",
             "sign_underwriter.sig",

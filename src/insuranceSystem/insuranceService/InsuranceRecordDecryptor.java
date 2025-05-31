@@ -26,7 +26,7 @@ public class InsuranceRecordDecryptor {
 
 	        byte[] aesKey = crypto.RSACryptoUtil.decrypt(encryptedAESKey, privateKey);
 
-	        File encryptedRecord = new File(baseDir + "/record.enc");
+	        File encryptedRecord = new File(baseDir + "/record_" +  patientCode + ".enc");
 	        byte[] encryptedData;
 	        try (FileInputStream fis = new FileInputStream(encryptedRecord)) {
 	            encryptedData = fis.readAllBytes();
@@ -38,7 +38,7 @@ public class InsuranceRecordDecryptor {
 	            fos.write(decrypted);
 	        }
 	        
-	        System.out.println("✅ record.enc 복호화 완료 → record_decrypted.zip 생성됨");
+	        System.out.println("복호화 완료 → record_decrypted.zip 생성됨");
 
 		}
 	
