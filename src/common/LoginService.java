@@ -6,7 +6,7 @@ import java.util.List;
 
 //로그인 검증 로직 수행 클래스
 public class LoginService {
-	public User login(Role... allowedRoles) {	// 병원 시스템에서는 DOCTOR, NURSE, PATIENT, 보험사 시스템에서는 PATIENT, INSURANCE 이 두 매개변수로 들어감
+	public User login(Role... allowedRoles) {
 		Scanner scanner = new Scanner(System.in);	// 스캐너 닫기 리팩토링 할 수 있을 듯
 		
 		

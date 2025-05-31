@@ -3,6 +3,13 @@ package hospitalSystem;
 import common.LoginService;
 import common.Role;
 import common.User;
+import common.UserStore;
+import hospitalSystem.hospitalService.*;
+import hospitalSystem.PatientService.*;
+
+import java.util.Scanner;
+import java.io.File;
+import java.nio.file.*;
 
 
 public class HospitalSystemApp {
@@ -35,14 +42,108 @@ public class HospitalSystemApp {
             case DOCTOR:
                 System.out.println("의사 기능 실행 중...");
                 // TODO: 진료기록 생성, 서명 등
+                
+                try {
+                	Scanner scanner = new Scanner(System.in); //try문 안으로 scanner 넣는 거 리팩토링
+                	
+                	System.out.print("진료할 환자 식별 코드(Pxxxx_xxx)를 입력하세요: ");
+                	String patientCode = scanner.nextLine();
+                	
+                	// 1. 환자 식별 코드(Pxxxx_xxx) 기반 진료 기록 생성
+                	HospitalRecordGenerator.generateMedicalRecordByCode(user, patientCode);
+                	
+                	// 2. 진료 기록 압축 + 해시 저장
+                	RecordCompressor.compressAndHash(patientCode);
+                	
+                	// 3. 전자 서명 (의사)
+                	SignatureCreator.signHash(user, patientCode);
+                	
+                	// 4. 진료기록 암호화 + AES 키 생성 + 수신자별 RSA 암호화
+                    EncryptionProcessor.encryptRecordWithMultiKeys(patientCode);
+
+                    // 5. 전자봉투 zip 생성
+                    EnvelopeBuilder.createEnvelope(patientCode);
+                    
+                    System.out.println("✅ 의사 - 전자봉투 생성 완료!");
+                	
+                }catch (Exception e) {
+                	System.out.println("❌ 오류 발생: " + e.getMessage());
+                }
+                
                 break;
             case NURSE:
                 System.out.println("간호사 기능 실행 중...");
                 // TODO: 전자봉투 전달, 서명 등
+                
+                try {
+                	Scanner scanner = new Scanner(System.in); //try문 안으로 scanner 넣는 거 리팩토링
+                	
+                	System.out.print("서명할 환자 식별 코드(Pxxxx_xxx)를 입력하세요: ");
+                	String patientCode = scanner.nextLine();
+                	
+                	/* 코드 리팩토링 - 유효성 검사 */
+                    // ✅ [1] 환자 코드 유효성 확인
+                    User patient = UserStore.getUserByPatientCode(patientCode);
+                    if (patient == null) {
+                        System.out.println("❌ 존재하지 않는 환자 코드입니다.");
+                        return;
+                    }
+
+                    // ✅ [2] 의사 서명 존재 여부 확인
+                    File doctorSigFile = new File("src/data/records/" + patientCode + "/sign_doctor.sig");
+                    if (!doctorSigFile.exists()) {
+                        System.out.println("⛔ 의사 서명이 먼저 필요합니다.");
+                        return;
+                    }
+                	
+                	// 1. 간호사 서명 생성
+                	SignatureCreator.signHash(user, patientCode);
+                	
+                	// 2. 전자봉투 zip 재구성  <- 간호사 서명 추가
+                	EnvelopeBuilder.createEnvelope(patientCode); 
+                	
+                	System.out.println("✅ 간호사 서명 및 봉투 재구성 완료!");
+                	
+                }catch (Exception e) {
+                	System.out.println("❌ 오류 발생: " + e.getMessage());
+                }
+                
                 break;
             case PATIENT:
                 System.out.println("환자 기능 실행 중...");
                 // TODO: 진료기록 열람, 복호화 등
+                
+                // 현재 로그인된 사용자의 ID 가져오기
+                String patientId = user.getId();
+                
+                try {
+                	Scanner scanner = new Scanner(System.in); //try문 안으로 scanner 넣는 거 리팩토링
+                
+                    System.out.print("📌 본인의 환자 식별 코드(Pxxxx_xxx)를 입력하세요: ");
+                    String patientCode = scanner.nextLine();
+                    
+                    // 1. 전자봉투 수신 및 압축 해제
+                    PatientEnvelopeReceiver.receiveEnvelope(patientCode);
+
+                    // 2. 암호화된 진료기록 복호화                    
+                    EnvelopeDecryptor.decryptEnvelope(patientId, patientCode);
+
+                    // 3. 복호화된 ZIP 압축 해제
+                    DecryptedZipExtractor.extractDecryptedRecord(patientCode);
+
+                    // 4. 진단서 및 처방전 열람
+                    DecryptedRecordViewer.viewDecryptedRecord(patientCode);
+
+                    // 5. 보험사로 전자봉투 전송
+                    EnvelopeForwarder.forwardEnvelope(patientCode);
+
+                    System.out.println("✅ 환자: 진료기록 열람 및 보험사 제출 완료!");
+                    
+                }catch (Exception e) {
+                    System.out.println("❌ 오류 발생: " + e.getMessage());
+                }
+                
+                
                 break;
             default:
                 System.out.println("지원하지 않는 역할입니다.");
