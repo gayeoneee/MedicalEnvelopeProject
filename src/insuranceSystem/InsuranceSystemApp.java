@@ -51,36 +51,38 @@ public class InsuranceSystemApp {
             case UNDERWRITER:
                 System.out.println("심사관 기능 실행 중...");
                 try {
-                    Scanner scanner = new Scanner(System.in);
-                    System.out.print("📌 환자 식별 코드(Pxxxx_xxx)를 입력하세요: ");
-                    String patientCode = scanner.nextLine();
-                    String baseDir = "src/data/insuranceInbox/" + patientCode;
-
-                    // 전자봉투 수신 및 압축 해제
-                    InsuranceRecordReceiver.receiveEnvelope(patientCode);
-                    
-                    // 전자봉투 복호화
-                    InsuranceRecordDecryptor.decryptEnvelope(user.getId(), patientCode);
-
-                    
-                    // 2️⃣ 복호화된 record_decrypted.zip 경로
-                    String decryptedZipPath = baseDir + "/record_decrypted.zip";
-
-                    // 3️⃣ 병원 서명 검증
-                    SignatureVerifier verifier = new SignatureVerifier();
-                    boolean verified = verifier.verifySignatures(decryptedZipPath);
-                    if (verified) {
-                        System.out.println("병원 서명 검증 성공! 진료기록 열람 가능.");
-
-                        // 4️⃣ 복호화된 진료기록 열람
-                        InsuranceRecordViewer.viewDecryptedRecord(patientCode);
-
-                        // 5️⃣ 심사관 전자서명
-                        InsuranceSigner signer = new InsuranceSigner();
-                        signer.signAsUnderwriter(baseDir + "/", user);
-
-                    } else {
-                        System.out.println("병원 서명 검증 실패! 위조 가능성 있음.");
+                	
+                    try(Scanner scanner = new Scanner(System.in)) {
+	                    System.out.print("📌 환자 식별 코드(Pxxxx_xxx)를 입력하세요: ");
+	                    String patientCode = scanner.nextLine();
+	                    String baseDir = "src/data/insuranceInbox/" + patientCode;
+	
+	                    // 전자봉투 수신 및 압축 해제
+	                    InsuranceRecordReceiver.receiveEnvelope(patientCode);
+	                    
+	                    // 전자봉투 복호화
+	                    InsuranceRecordDecryptor.decryptEnvelope(user.getId(), patientCode);
+	
+	                    
+	                    // 2️⃣ 복호화된 record_decrypted.zip 경로
+	                    String decryptedZipPath = baseDir + "/record_decrypted.zip";
+	
+	                    // 3️⃣ 병원 서명 검증
+	                    SignatureVerifier verifier = new SignatureVerifier();
+	                    boolean verified = verifier.verifySignatures(decryptedZipPath);
+	                    if (verified) {
+	                        System.out.println("병원 서명 검증 성공! 진료기록 열람 가능.");
+	
+	                        // 4️⃣ 복호화된 진료기록 열람
+	                        InsuranceRecordViewer.viewDecryptedRecord(patientCode);
+	
+	                        // 5️⃣ 심사관 전자서명
+	                        InsuranceSigner signer = new InsuranceSigner();
+	                        signer.signAsUnderwriter(baseDir + "/", user);
+	
+	                    } else {
+	                        System.out.println("병원 서명 검증 실패! 위조 가능성 있음.");
+	                    }
                     }
                 } catch (Exception e) {
                     System.out.println("❌ 오류 발생: " + e.getMessage());

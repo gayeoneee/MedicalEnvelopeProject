@@ -19,12 +19,18 @@ public class InsuranceRecordDecryptor {
 	        PrivateKey privateKey = KeyManager.loadPrivateKey(privateKeyPath);
 	        
 	        File aesKeyFile = new File(baseDir + "/aes_for_insurance.key");
-	        byte[] encryptedAESKey = new FileInputStream(aesKeyFile).readAllBytes();
+	        byte[] encryptedAESKey;
+	        try (FileInputStream fis = new FileInputStream(aesKeyFile)) {
+	            encryptedAESKey = fis.readAllBytes();
+	        }
 
 	        byte[] aesKey = crypto.RSACryptoUtil.decrypt(encryptedAESKey, privateKey);
 
 	        File encryptedRecord = new File(baseDir + "/record.enc");
-	        byte[] encryptedData = new FileInputStream(encryptedRecord).readAllBytes();
+	        byte[] encryptedData;
+	        try (FileInputStream fis = new FileInputStream(encryptedRecord)) {
+	            encryptedData = fis.readAllBytes();
+	        }
 
 	        byte[] decrypted = AESCryptoUtil.decrypt(encryptedData, aesKey);
 	        
