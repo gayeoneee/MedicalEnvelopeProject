@@ -8,14 +8,15 @@ import crypto.RSACryptoUtil;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.PrivateKey;
 
 public class SignatureCreator {
-	// 전자서명 생성
+	// 전자서명 생성 - [3단계] 의사 전자서명 + 
 	public static void signHash(User user, String patientCode) throws Exception {
 		// 1. 권한 확인 (의사 또는 간호사만 가능)
         if (user.getRole() != Role.DOCTOR && user.getRole() != Role.NURSE) {
-            System.out.println("❌ 서명 권한이 없습니다.");
+            System.out.println("서명 권한이 없습니다.");
             return;
         }
         
@@ -24,7 +25,7 @@ public class SignatureCreator {
         
         File hashFile = new File(baseDir + "/hash.txt");
         if (!hashFile.exists()) {
-            System.out.println("❌ hash.txt 파일이 없습니다.");
+            System.out.println("hash.txt 파일이 없습니다.");
             return;
         }
         
@@ -42,7 +43,11 @@ public class SignatureCreator {
         try (FileOutputStream fos = new FileOutputStream(baseDir + "/" + sigFileName)) {
             fos.write(signature);
         }
+        
+        // 서명자 ID 파일 생성 -> 리팩토링 E
+        String idFileName = (user.getRole() == Role.DOCTOR) ? "sign_doctor_id.txt" : "sign_nurse_id.txt";
+        Files.writeString(Path.of(baseDir, idFileName), user.getId());
 
-        System.out.println("✅ " + sigFileName + " 생성 완료");
+        System.out.println(sigFileName + " 생성 완료");
 	}
 }

@@ -25,7 +25,7 @@ public class PatientEnvelopeReceiver {
         // 2. 전자봉투 가져오기
         File zipFile = new File(zipPath);
         if (!zipFile.exists()) {
-        	throw new Exception("1전자봉투(zip)가 존재하지 않습니다.");
+        	throw new Exception("전자봉투(zip)가 존재하지 않습니다.");
         }
         
         

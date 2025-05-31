@@ -16,6 +16,9 @@ public class UserStore {
     // 환자 식별 코드(Pxxxx_xxx) 기준으로 저장된 사용자 (환자만 해당)
     private static final Map<String, User> usersByPatientCode = new HashMap<>();
 	
+    // 리팩토링 B
+    private static final Map<String, User> usersByUnderwriterCode = new HashMap<>();
+    
     static {
         // 병원 관계자
         usersById.put("doc1", new User("doc1", "1234", Role.DOCTOR));
@@ -33,7 +36,12 @@ public class UserStore {
         usersByPatientCode.put(patient2.getPatientCode(), patient2);
 
         // 보험사 관계자
-        usersById.put("under1", new User("under1", "u111", Role.UNDERWRITER));
+        // 심사관
+        User under1 = new User("under1", "u111", Role.UNDERWRITER, null, "U2025_001");
+        usersById.put("under1", under1);
+        usersByUnderwriterCode.put(under1.getUnderwriterCode(), under1);
+
+        // 보상 담당자 
         usersById.put("adjust1", new User("adjust1", "a111", Role.ADJUSTER));
     }
     
@@ -50,5 +58,15 @@ public class UserStore {
     // 환자 식별 코드로 환자 조회 (환자만 가능)
     public static User getUserByPatientCode(String patientCode) {
         return usersByPatientCode.get(patientCode);
+    }
+    
+    // 심사관 코드로 심사관 조회
+    public static User getUserByUnderwriterCode(String code) {
+        for (User u : usersById.values()) {
+            if (u.getRole() == Role.UNDERWRITER && code.equals(u.getUnderwriterCode())) {
+                return u;
+            }
+        }
+        return null;
     }
 }

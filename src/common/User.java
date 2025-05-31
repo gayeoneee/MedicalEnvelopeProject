@@ -1,22 +1,30 @@
 package common;
 
 public class User {
-	private String id;
-	private String password;
-	private Role role;
-	private String patientCode; // 환자 전용 식별자
+    private String id;            // 로그인 ID
+    private String password;      // 비밀번호
+    private Role role;            // 역할
+    private String patientCode;   // 환자 코드 (PATIENT인 경우만)
+    private String underwriterCode;  // 심사관 코드 (ADJUSTER인 경우만) //리팩토링 B
 	
-    // 일반 사용자 생성자 (의사, 간호사, 보험사 등)
+	
+    // 병원 관계자, 보상 담당자용 기본 생성자
     public User(String id, String password, Role role) {
-        this(id, password, role, null);
-    }
-
-    // 환자 전용 생성자
-    public User(String id, String password, Role role, String patientCode) {
         this.id = id;
         this.password = password;
         this.role = role;
+    }
+
+    // 환자용 생성자
+    public User(String id, String password, Role role, String patientCode) {
+        this(id, password, role);
         this.patientCode = patientCode;
+    }
+    
+    // 심사관용 생성자
+    public User(String id, String password, Role role, String patientCode, String underwriterCode) {
+        this(id, password, role, patientCode);
+        this.underwriterCode = underwriterCode;
     }
 
 	public String getId() {
@@ -34,4 +42,13 @@ public class User {
     public String getPatientCode() {
         return patientCode;
     }
+    
+    public String getUnderwriterCode() {
+        return underwriterCode;
+    }
+
+    public void setUnderwriterCode(String underwriterCode) {
+        this.underwriterCode = underwriterCode;
+    }
+
 }
