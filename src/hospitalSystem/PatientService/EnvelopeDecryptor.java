@@ -30,7 +30,7 @@ public class EnvelopeDecryptor {
         byte[] aesKey = crypto.RSACryptoUtil.decrypt(encryptedAESKey, privateKey);
         
         // 5. 암호화된 진료기록 로드
-        File encryptedRecord = new File(baseDir + "/record.enc");
+        File encryptedRecord = new File(baseDir + "/record_" + patientCode + ".enc");
         byte[] encryptedData = new FileInputStream(encryptedRecord).readAllBytes();
         
         // 6. AES로 record.enc 복호화 → ZIP 복원

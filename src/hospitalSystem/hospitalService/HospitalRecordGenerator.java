@@ -3,6 +3,7 @@ package hospitalSystem.hospitalService;
 import common.Role;
 import common.User;
 import common.UserStore;
+import hospitalSystem.PatientService.RecordRequestSubmitter; // 리팩토링 C
 
 import java.io.*;
 import java.nio.file.*;
@@ -12,8 +13,16 @@ import java.util.Collection;
 
 public class HospitalRecordGenerator {
 	
-	// 1단계: 환자 식별 코드(Pxxxx-xxx) 기반 진료 기록 파일 생성
+	// [1단계] 환자 식별 코드(Pxxxx-xxx) 기반 진료 기록 파일 생성
 	public static void generateMedicalRecordByCode(User doctor, String patientCode) throws Exception {
+		// 리팩토링 C
+		// 0. 진료 요청 존재 여부 확인
+        if (!RecordRequestSubmitter.hasRequest(patientCode)) {
+            System.out.println("진료 요청이 존재하지 않습니다. 요청 후 진행하세요.");
+            return;
+        }
+		
+		
 		// 1. 환자 코드로 UserStore에서 사용자 검색
 		/*
         User patient = null;
@@ -29,16 +38,18 @@ public class HospitalRecordGenerator {
         
         // 리팩토링 A (UserStore도 수정됨)
         User patient = UserStore.getUserByPatientCode(patientCode);
-
+       
         if (patient == null) {
-            System.out.println("❌ 해당 식별 코드의 환자가 존재하지 않습니다.");
+            System.out.println("해당 식별 코드의 환자가 존재하지 않습니다.");
             return;
         }
         
         
         // 2. 환자 기록 디렉토리 확인
         String baseDir = "src/data/records/" + patientCode;
+        
         File dir = new File(baseDir);
+        
         if (!dir.exists()) {
             System.out.println("❌ 해당 환자의 기록 폴더가 존재하지 않습니다: " + baseDir);
             return;

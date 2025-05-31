@@ -36,6 +36,12 @@ public class HospitalSystemApp {
         return loginService.login(Role.DOCTOR, Role.NURSE, Role.PATIENT);
     }
 	
+	// 진료 요청 파일이 존재하는지 확인
+    private static boolean isRequestExists(String patientCode) {
+        File requestFile = new File("src/data/requests/" + patientCode + "/request.txt");
+        return requestFile.exists();
+    }
+	
 	// 🧑‍⚕️ 로그인된 역할에 따라 동작 분기
     private static void handleRoleBasedActions(User user) {
         switch (user.getRole()) {
@@ -48,6 +54,12 @@ public class HospitalSystemApp {
                 	
                 	System.out.print("진료할 환자 식별 코드(Pxxxx_xxx)를 입력하세요: ");
                 	String patientCode = scanner.nextLine();
+                	
+                    // 요청 존재 여부 확인 -> 리팩토링C
+                    if (!isRequestExists(patientCode)) {
+                        System.out.println("⛔ 환자의 진료 요청이 존재하지 않아 전자봉투 생성이 중단되었습니다.");
+                        return;
+                    }
                 	
                 	// 1. 환자 식별 코드(Pxxxx_xxx) 기반 진료 기록 생성
                 	HospitalRecordGenerator.generateMedicalRecordByCode(user, patientCode);
@@ -80,6 +92,14 @@ public class HospitalSystemApp {
                 	
                 	System.out.print("서명할 환자 식별 코드(Pxxxx_xxx)를 입력하세요: ");
                 	String patientCode = scanner.nextLine();
+                	
+                	
+                    // 요청 존재 여부 확인 -> 리팩토링C
+                    if (!isRequestExists(patientCode)) {
+                        System.out.println("⛔ 환자의 요청이 존재하지 않아 전자봉투 생성이 중단되었습니다.");
+                        return;
+                    }
+                	
                 	
                 	/* 코드 리팩토링 - 유효성 검사 */
                     // ✅ [1] 환자 코드 유효성 확인
@@ -115,29 +135,72 @@ public class HospitalSystemApp {
                 
                 // 현재 로그인된 사용자의 ID 가져오기
                 String patientId = user.getId();
+                String patientCode = user.getPatientCode();
                 
                 try {
                 	Scanner scanner = new Scanner(System.in); //try문 안으로 scanner 넣는 거 리팩토링
-                
-                    System.out.print("📌 본인의 환자 식별 코드(Pxxxx_xxx)를 입력하세요: ");
-                    String patientCode = scanner.nextLine();
+                	
+                	// 메뉴 선택
+                	System.out.println("1. 진료 요청 제출");
+                    System.out.println("2. 진료기록 열람 및 보험사 제출");
+                    System.out.print("번호 선택 > ");
+                    int menu = scanner.nextInt();
                     
-                    // 1. 전자봉투 수신 및 압축 해제
-                    PatientEnvelopeReceiver.receiveEnvelope(patientCode);
+                    scanner.nextLine(); // 버퍼 비우기
+                    System.out.println("===================================");
+                    
+                    
+                    // 요청 파일 경로
+                    File requestFile = new File("src/data/requests/" + patientCode + "/request.txt");
+                    
+                    // 1. 진료 요청 제출
+                    if (menu == 1) {
+                    	// 이미 존재할 경우 차단
+                        if (requestFile.exists()) {
+                            System.out.println("⚠️ 이미 진료 요청이 제출되어 있습니다. 중복 요청은 불가능합니다.");
+                            return;
+                        }
+                        
+                        System.out.print("📌 희망하는 심사관 코드(Uxxxx_xxx)를 입력하세요: ");
+                        String adjusterCode = scanner.nextLine();
+                        
+                        // 진료 요청 제출
+                        RecordRequestSubmitter.submitRequest(patientCode, adjusterCode);
+                        
+                        return;
+                    }
+                    
+                    // 2. 진료기록 열람 및 보험사 제출
+                    else if (menu == 2) {
+                    	// 요청이 없으면 차단
+                        if (!requestFile.exists()) {
+                            System.out.println("⛔ 진료 요청이 존재하지 않습니다. 먼저 요청을 제출해주세요.");
+                            return;
+                        }
+                        
+                        // 1. 전자봉투 수신 및 압축 해제
+                        PatientEnvelopeReceiver.receiveEnvelope(patientCode);
 
-                    // 2. 암호화된 진료기록 복호화                    
-                    EnvelopeDecryptor.decryptEnvelope(patientId, patientCode);
+                        // 2. 암호화된 진료기록 복호화                    
+                        EnvelopeDecryptor.decryptEnvelope(patientId, patientCode);
 
-                    // 3. 복호화된 ZIP 압축 해제
-                    DecryptedZipExtractor.extractDecryptedRecord(patientCode);
+                        // 3. 복호화된 ZIP 압축 해제
+                        DecryptedZipExtractor.extractDecryptedRecord(patientCode);
 
-                    // 4. 진단서 및 처방전 열람
-                    DecryptedRecordViewer.viewDecryptedRecord(patientCode);
+                        // 4. 진단서 및 처방전 열람
+                        DecryptedRecordViewer.viewDecryptedRecord(patientCode);
 
-                    // 5. 보험사로 전자봉투 전송
-                    EnvelopeForwarder.forwardEnvelope(patientCode);
+                        // 5. 보험사로 전자봉투 전송
+                        EnvelopeForwarder.forwardEnvelope(patientCode);
 
-                    System.out.println("✅ 환자: 진료기록 열람 및 보험사 제출 완료!");
+                        System.out.println("✅ 환자: 진료기록 열람 및 보험사 제출 완료!");
+                        
+                    }
+                    
+                    else {
+                        System.out.println("❌ 잘못된 입력입니다.");
+                    }
+
                     
                 }catch (Exception e) {
                     System.out.println("❌ 오류 발생: " + e.getMessage());

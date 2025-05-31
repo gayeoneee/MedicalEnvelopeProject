@@ -12,12 +12,14 @@ public class EnvelopeBuilder {
         
         // 2. 전자봉투 구성 파일 
         String[] filesToInclude = {
-                "record.enc",
+        		"record_" + patientCode + ".enc",
                 "aes_for_patient.key",
                 "aes_for_insurance.key",
                 "hash.txt",
                 "sign_doctor.sig",
-                "sign_nurse.sig"
+                "sign_nurse.sig",
+                "sign_doctor_id.txt",  // ← 추가
+                "sign_nurse_id.txt"    // ← 추가
         };
         
         // 최종 전자봉투 zip 파일
@@ -27,10 +29,12 @@ public class EnvelopeBuilder {
         	for (String filename : filesToInclude) {
         		File file = new File(baseDir, filename);
         		
-                if (!file.exists()) {
-                    System.out.println("⚠️ 포함되지 않음 (파일 없음): " + filename);
-                    continue;
-                }
+//        		System.out.println("🔍 경로 확인 중: " + file.getAbsolutePath()); //디버깅 용
+
+        	    if (!file.exists()) {
+        	        System.out.println("⚠️ 포함되지 않음 (파일 없음): " + filename);
+        	        continue;
+        	    }
                 
                 try (FileInputStream fis = new FileInputStream(file)) {
                     zos.putNextEntry(new ZipEntry(filename));
