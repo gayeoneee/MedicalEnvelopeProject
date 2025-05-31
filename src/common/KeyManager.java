@@ -1,16 +1,19 @@
 package common;
 
-import java.io.*;
-import java.security.*;
-//리펙토링때 이거 고치면 좋을듯 (광범위 -> 특정 모듈)
 /*
- import java.io.FileInputStream;
+import java.io.*;
+import java.security.*; 
+*/
+
+//리펙토링때 이거 고치면 좋을듯 (광범위 -> 특정 모듈)
+
+import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.IOException;
 import java.security.PublicKey;
 import java.security.PrivateKey;
-import java.security.GeneralSecurityException;
- */
+
+ 
 
 
 public class KeyManager {

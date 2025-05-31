@@ -3,12 +3,13 @@ package insuranceSystem.insuranceService;
 import java.io.*;
 import java.util.zip.*;
 
+// 최종 전자봉투 생성 및 보험사 outbox에 저장
 public class InsuranceRecordArchiver {
 
     public void archiveFinalEnvelope(String dir, String patientCode) throws Exception {
         System.out.println("📦 보험사 최종 전자봉투 생성 중...");
 
-        // ✅ 보험사 Outbox 경로 지정 (P2025_001 폴더 생성)
+        // 최종 전자봉투를 저장할 파일
         String insuranceOutboxDir = "src/data/insuranceOutbox/" + patientCode + "/";
         new File(insuranceOutboxDir).mkdirs();
 
@@ -51,19 +52,6 @@ public class InsuranceRecordArchiver {
         }
 
         System.out.println("✅ 최종 전자봉투 보관 완료! → " + zipFilePath);
-    }
-
-
-    private void addFile(ZipOutputStream zos, String filePath, String entryName) throws IOException {
-        try (FileInputStream fis = new FileInputStream(filePath)) {
-            zos.putNextEntry(new ZipEntry(entryName));
-            byte[] buffer = new byte[4096];
-            int len;
-            while ((len = fis.read(buffer)) > 0) {
-                zos.write(buffer, 0, len);
-            }
-            zos.closeEntry();
-        }
     }
 
     // (선택) 환자가 전송한 봉투를 별도로 저장하는 receive 메서드
