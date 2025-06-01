@@ -12,7 +12,7 @@ import java.nio.file.Path;
 import java.security.PrivateKey;
 
 public class SignatureCreator {
-	// 전자서명 생성 - [3단계] 의사 전자서명 생성/ [5단계] 간호사 전자서명 생성 
+	// 전자서명 생성 - [3단계] 의사 전자서명 생성/ [6단계] 간호사 전자서명 생성 
 	public static void signHash(User user, String patientCode) throws Exception {
 		
 		// 1. 권한 확인 (의사 또는 간호사만 가능)
@@ -49,6 +49,7 @@ public class SignatureCreator {
         String idFileName = (user.getRole() == Role.DOCTOR) ? "sign_doctor_id.txt" : "sign_nurse_id.txt";
         Files.writeString(Path.of(baseDir, idFileName), user.getId());
 
-        System.out.println(sigFileName + " 생성 완료");
+        String message = (user.getRole() == Role.DOCTOR) ? "🖋️ 담당 의사의 전자서명이 완료되었습니다.\n" : "🖋️ 담당 간호사의 전자서명이 완료되었습니다.\n";
+        System.out.println(message);
 	}
 }

@@ -15,6 +15,27 @@ import common.KeyManager;
 // [4단계] 복호화된 결과 전자서명 검증 후 열람
 // diagnosis.txt, prescription.txt 출력
 public class DecryptedRecordViewer {
+    // 진료기록 열람 + 서명 검증 출력
+	public static void viewDecryptedRecord(String patientCode) throws Exception {
+		String baseDir = "src/data/envelopes/" + patientCode;
+		
+		// 1. 해시 파일 로드
+        byte[] hashBytes = Files.readAllBytes(new File(baseDir + "/hash.txt").toPath());
+        
+        // 2. 서명 검증 결과 출력
+        System.out.println("\n🧾 전자서명 진본 여부 검증 결과");
+        System.out.println("-----------------------------------------------");
+        System.out.println(verifySignature("DOCTOR", hashBytes, baseDir));
+        System.out.println(verifySignature("NURSE", hashBytes, baseDir));
+        System.out.println("-----------------------------------------------");
+		
+		// 3. 진단서/처방전 텍스트 출력
+
+		readAndPrintFile(baseDir + "/diagnosis.txt", "🩺 진단서 내용");
+		readAndPrintFile(baseDir + "/prescription.txt", "💊 처방전 내용");
+	}
+	
+	
     // 역할에 따른 서명 파일 이름 반환
     private static String getSigFileName(String role) {
         return role.equals("DOCTOR") ? "sign_doctor.sig" : "sign_nurse.sig";
@@ -68,31 +89,17 @@ public class DecryptedRecordViewer {
         	throw new FileNotFoundException(title + " 파일이 존재하지 않습니다.");
         }
 
-        System.out.println("\n" + title);
+        System.out.println("\n\n" + title);
         System.out.println("----------------------");
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
+            
             while ((line = reader.readLine()) != null) {
                 System.out.println(line);
             }
         }
+        System.out.println("----------------------");
     }
 	
-    // 진료기록 열람 + 서명 검증 출력
-	public static void viewDecryptedRecord(String patientCode) throws Exception {
-		String baseDir = "src/data/envelopes/" + patientCode;
-		
-		// 1. 해시 파일 로드
-        byte[] hashBytes = Files.readAllBytes(new File(baseDir + "/hash.txt").toPath());
-        
-        // 2. 서명 검증 결과 출력
-        System.out.println("🔍 서명 검증 결과");
-        System.out.println("----------------------");
-        System.out.println(verifySignature("DOCTOR", hashBytes, baseDir));
-        System.out.println(verifySignature("NURSE", hashBytes, baseDir));
-		
-		// 3. 진단서/처방전 텍스트 출력
-		readAndPrintFile(baseDir + "/diagnosis.txt", "🩺 진단서 내용");
-		readAndPrintFile(baseDir + "/prescription.txt", "💊 처방전 내용");
-	}
+
 }

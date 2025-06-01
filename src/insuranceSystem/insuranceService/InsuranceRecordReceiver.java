@@ -9,9 +9,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class InsuranceRecordReceiver {
-	// [1] 전자봉투 수신 및 압축 해제 
-		// ex) envelope_P2025_001.zip → record.enc, hash.txt 등 파일 추출
-		//     data/envelopes/P2025_001/ 에 저장
+		// [2단계] 전자봉투 수신 및 압축 해제
+		// - envelope_*.zip 파일을 압축 해제하여 내부 파일들 추출
+		// - 대상 디렉토리: src/data/insuranceInbox/Pxxxx_xxx/
 		public static void receiveEnvelope(String patientCode) throws Exception {
 			// 1. 수신받은 전자봉투 디렉토리 경로
 			String sourceDir = "src/data/insuranceInbox/" + patientCode;
@@ -29,39 +29,7 @@ public class InsuranceRecordReceiver {
 	        }
 	        
 	        
-	        
-	        // 3. zip 파일 열기
-	        // 참고 코드 (공부함) : https://velog.io/@wlgns3855/JAVA-java%EB%A1%9C-zip%ED%8C%8C%EC%9D%BC-%EC%95%95%EC%B6%95%ED%92%80%EA%B8%B0        
-//	        FileInputStream fis = new FileInputStream(zipFile);
-//	        BufferedInputStream bis = new BufferedInputStream(fis);
-//	        
-//	        ZipInputStream zis = new ZipInputStream(bis);
-//	        ZipEntry zipEntry = null;
-//	        
-//	        while( (zipEntry = zis.getNextEntry()) != null ) {
-//	        	String filePath = destDir + "/" + zipEntry.getName();
-//	        	
-//	        	File outFile = new File(filePath);
-//	        	
-//	        	FileOutputStream fos = new FileOutputStream(outFile);
-//	        	BufferedOutputStream bos = new BufferedOutputStream(fos);
-//	        	
-//	        	int read;
-//	        	
-//	        	while( (read = zis.read()) != -1 ) {
-//	        		bos.write(read);; //1바이트씩 기록
-//	        	}
-//	        	
-//	        	bos.close();
-//	        	fos.close();
-//	        }
-//	        
-//	        zis.close();
-//	        bis.close();
-//	        fis.close();
-	        
-	        // 리팩토링
-	        
+	        // 3. zip 파일 열기	        
 	        try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(zipFile));
 	                ZipInputStream zis = new ZipInputStream(bis)) {
 
@@ -80,6 +48,6 @@ public class InsuranceRecordReceiver {
 	           }
 	        
 	        
-	        System.out.println("📦 전자봉투 수신 및 압축 해제 완료: " + zipPath);
+	        System.out.println("📦 환자가 제출한 전자봉투를 성공적으로 수신하고 압축을 해제했습니다.\n");
 		}
 }

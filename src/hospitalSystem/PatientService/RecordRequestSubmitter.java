@@ -24,7 +24,7 @@ public class RecordRequestSubmitter {
             writer.write(underwriterCode);
         }
         
-        System.out.println("진료 요청 제출 완료 → " + filePath);
+        System.out.println("진료가 요청되었습니다!");
 	}
 	
 	// 진료 요청 존재 여부 확인

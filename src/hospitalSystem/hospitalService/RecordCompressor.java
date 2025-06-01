@@ -50,7 +50,8 @@ public class RecordCompressor {
 
         	}
         }
-        System.out.println("환자 기록들을 압축한 record_" + patientCode + ".zip 생성 완료");
+        System.out.println("📦 진료 기록을 압축하여 전자문서로 저장합니다...");
+        System.out.println("   → 압축 파일: record_" + patientCode + ".zip");
         
         /* 2. 해시 값(SHA-256) 생성 */
         byte[] zipBytes = Files.readAllBytes(zipFile.toPath());
@@ -62,6 +63,6 @@ public class RecordCompressor {
             fos.write(hash);
         }
         
-        System.out.println("hash.txt 생성 완료 (SHA-256)");
+        System.out.println("   → 무결성 검증을 위한 해시 생성 완료 (hash.txt)\n");
 	}
 }

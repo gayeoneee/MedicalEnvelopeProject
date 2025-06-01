@@ -59,7 +59,7 @@ public class EncryptionProcessor {
         // 심사관 코드 → User 객체 조회 (UserStore에 해당 메서드 필요)
         User underwriter = UserStore.getUserByUnderwriterCode(underwriterCode);
         if (underwriter == null) {
-            System.out.println("해당 심사관 코드를 가진 사용자를 찾을 수 없습니다.");
+            System.out.println("❌ 해당 심사관 코드를 가진 사용자를 찾을 수 없습니다.");
             return;
         }
         
@@ -81,6 +81,6 @@ public class EncryptionProcessor {
             fos2.write(aesForInsurance);
         }
         
-        System.out.println("record.enc, aes_for_patient.key, aes_for_insurance.key 생성 완료");
+        System.out.println("🔐 진료 기록을 암호화하고, 환자 및 지정된 보험사 수신자를 위한 복호화 키를 생성합니다.\n");
 	}
 }

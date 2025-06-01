@@ -71,7 +71,8 @@ public class EnvelopeBuilder {
         	}
         }
         
-        System.out.println("📦 전자봉투 생성 완료: envelope_" + patientCode + ".zip");
+        String message = (user.getRole() == Role.DOCTOR) ? "📩 의사의 진료기록이 담긴 임시 전자봉투가 생성되었습니다!" : "📩 환자에게 보낼 최종 전자봉투가 생성되었습니다!";
+        System.out.println(message);
 	}
 	
 	

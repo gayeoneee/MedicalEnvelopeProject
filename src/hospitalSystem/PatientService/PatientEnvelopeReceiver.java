@@ -28,6 +28,7 @@ public class PatientEnvelopeReceiver {
         	throw new Exception("전자봉투(zip)가 존재하지 않습니다.");
         }
         
+        System.out.println("📦 병원으로부터 받은 전자봉투를 수신했습니다.");
         
         
         // 3. zip 파일 열기
@@ -50,6 +51,6 @@ public class PatientEnvelopeReceiver {
            }
         
         
-        System.out.println("📦 전자봉투 수신 및 압축 해제 완료: " + zipPath);
+        System.out.println("   → 압축 해제 완료 (record.enc, hash.txt 등 복원됨)\n");
 	}
 }

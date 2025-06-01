@@ -1,17 +1,17 @@
 package insuranceSystem.insuranceService;
 
 import common.KeyManager;
-import common.User;
 import crypto.AESCryptoUtil;
-import crypto.RSACryptoUtil;
 
-import java.io.*;
-import java.nio.file.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.security.PrivateKey;
-import java.util.zip.*;
 
 public class InsuranceRecordDecryptor {
-		
+		// [3단계] 전자봉투 복호화
+		// - 심사관 개인키로 aes_for_insurance.key 복호화 → AES 키 획득
+		// - AES로 record.enc 복호화 → record_decrypted.zip 생성
 		public static void decryptEnvelope(String underwriterId, String patientCode) throws Exception {
 			String baseDir = "src/data/insuranceInbox/" + patientCode;
 			
@@ -38,7 +38,8 @@ public class InsuranceRecordDecryptor {
 	            fos.write(decrypted);
 	        }
 	        
-	        System.out.println("복호화 완료 → record_decrypted.zip 생성됨");
+	        System.out.println("🔓 전자봉투 복호화 완료! 진료기록 압축파일을 복원했습니다.");
+	        System.out.println("   → 복호화된 진료기록 파일: record_decrypted.zip\n");
 
 		}
 	

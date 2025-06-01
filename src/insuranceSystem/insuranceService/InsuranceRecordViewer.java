@@ -1,39 +1,50 @@
 package insuranceSystem.insuranceService;
 
-import java.io.*;
-import java.util.zip.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class InsuranceRecordViewer {
+	// [5단계] 복호화된 진료기록 열람
+	// - record_decrypted.zip 압축 해제 후
+	//   진단서(diagnosis.txt), 처방전(prescription.txt) 출력
+	public static void viewDecryptedRecord(String patientCode) throws Exception {
+	    String baseDir = "src/data/insuranceInbox/" + patientCode;
+	    String zipFilePath = baseDir + "/record_decrypted.zip";
 
-	private static void readAndPrintFile(String filePath, String title) throws Exception {
+	    // 1️. 압축 해제
+	    String outputDir = baseDir + "/InsuranceDocuments"; //진단서 처방전 담을 파일
+	    unzip(zipFilePath, outputDir);
+
+	    // 2️. 해제된 파일 읽기
+	    readAndPrintFile(outputDir + "/diagnosis.txt", "🩺 진단서 내용");
+	    readAndPrintFile(outputDir + "/prescription.txt", "💊 처방전 내용");
+	}
+
+    private static void readAndPrintFile(String filePath, String title) throws Exception {
         File file = new File(filePath);
         if (!file.exists()) {
         	throw new FileNotFoundException(title + " 파일이 존재하지 않습니다.");
         }
 
-        System.out.println("\n" + title);
+        System.out.println("\n\n" + title);
         System.out.println("----------------------");
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
+            
             while ((line = reader.readLine()) != null) {
                 System.out.println(line);
             }
         }
+        System.out.println("----------------------");
     }
 	
-	
-	public static void viewDecryptedRecord(String patientCode) throws Exception {
-	    String baseDir = "src/data/insuranceInbox/" + patientCode;
-	    String zipFilePath = baseDir + "/record_decrypted.zip";
-
-	    // 1️⃣ 압축 해제
-	    String outputDir = baseDir + "/InsuranceDocuments"; //진단서 처방전 담을 파일
-	    unzip(zipFilePath, outputDir);
-
-	    // 2️⃣ 해제된 파일 읽기
-	    readAndPrintFile(outputDir + "/diagnosis.txt", "🩺 진단서 내용");
-	    readAndPrintFile(outputDir + "/prescription.txt", "💊 처방전 내용");
-	}
 
 	private static void unzip(String zipFilePath, String outputDir) throws IOException {
 	    File dir = new File(outputDir);

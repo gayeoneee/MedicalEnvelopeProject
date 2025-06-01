@@ -15,15 +15,19 @@ public class HospitalSystemApp {
 	
 	public static void main(String[] args) throws Exception {
 		System.out.println("🏥 병원 시스템");
+		System.out.println("==========================================================");
 		
-		User user = login();
-		
-		if (user == null) {
+        // 🔐 로그인
+		Scanner scanner = new Scanner(System.in);
+        User user = login();
+        
+        if (user == null) {
             System.out.println("프로그램을 종료합니다.");
             return;
         }
-		
-		handleRoleBasedActions(user);
+        
+        // 🧑‍💼 역할에 따른 기능 실행
+        handleRoleBasedActions(user);
 	}
     
 	
@@ -67,6 +71,7 @@ public class HospitalSystemApp {
                     }
                     
                     System.out.println("===================================");
+                    System.out.println("📌 환자 진료를 시작합니다.\n");
                 	
                     /* 병원측 플로우 */
                 	// [1단계] 환자 식별 코드(Pxxxx_xxx) 기반 진료 기록 생성
@@ -84,7 +89,8 @@ public class HospitalSystemApp {
                     // [5단계] 전자봉투 zip 생성
                     EnvelopeBuilder.createEnvelope(user, patientCode);
                     
-                    System.out.println("✅ 의사 - 진료 후 진료 기록이 생성되었습니다. 간호사를 통해 진료 기록을 전송 받으세요!");
+                    System.out.println("===================================");
+                    System.out.println("✅ 의사 - 진료 후 진료 기록이 생성되었습니다. 간호사에게 진료 기록을 보냈습니다!");
                 	
                 }catch (Exception e) {
                 	System.out.println("❌ 오류 발생: " + e.getMessage());
@@ -121,6 +127,7 @@ public class HospitalSystemApp {
                     }
                     
                     System.out.println("===================================");
+                    System.out.println("📌 의사에게 받은 진료기록을 환자에게 보내기 위해 서류 작업을 시작합니다!\n");
                     
                     /* 병원측 플로우 */
                 	// [6단계] 간호사 서명 생성
@@ -129,6 +136,7 @@ public class HospitalSystemApp {
                 	// [7단계] 전자봉투 zip 재구성 (간호사 서명 추가) 후 환자에게 전송
                 	EnvelopeBuilder.createEnvelope(user, patientCode);
                 	
+                    System.out.println("===================================");
                 	System.out.println("✅ 간호사 - 환자에게 진료기록을 전송했습니다! ");
                 	
                 }catch (Exception e) {
@@ -147,8 +155,9 @@ public class HospitalSystemApp {
                 try (Scanner scanner = new Scanner(System.in)) {
                 	
                 	// 메뉴 선택
+                    System.out.println("\n원하시는 기능을 선택해주세요!");
                 	System.out.println("1. 진료 요청 제출");
-                    System.out.println("2. 진료기록 열람 및 보험사 제출");
+                    System.out.println("2. 진료기록 열람 및 보험사 제출\n");
                     System.out.print("번호 선택 > ");
                     int menu = scanner.nextInt();
                     
@@ -184,6 +193,8 @@ public class HospitalSystemApp {
                             return;
                         }
                         
+                        System.out.println("📌 병원으로부터 받은 전자봉투를 수신합니다...\n ");
+                        
                         /* 환자 측 플로우 */
                         // [1단계] 전자봉투 수신 및 압축 해제
                         PatientEnvelopeReceiver.receiveEnvelope(patientCode);
@@ -199,8 +210,9 @@ public class HospitalSystemApp {
 
                         // [5단계] 보험사로 전자봉투 전송
                         EnvelopeForwarder.forwardEnvelope(patientCode);
-
-                        System.out.println("✅ 환자 -  진료기록 열람 및 보험사 제출 완료!");
+                        
+                        System.out.println("===================================");
+                        System.out.println("✅ 환자 - 열람한 진료기록을 보험사에 제출했습니다!");
                         
                     }
                     

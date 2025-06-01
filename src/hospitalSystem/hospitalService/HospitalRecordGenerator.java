@@ -15,7 +15,7 @@ public class HospitalRecordGenerator {
 		// 리팩토링 C
 		// 0. 진료 요청 존재 여부 확인
         if (!RecordRequestSubmitter.hasRequest(patientCode)) {
-            System.out.println("진료 요청이 존재하지 않습니다. 요청 후 진행하세요.");
+            System.out.println("❌ 진료 요청이 존재하지 않습니다. 요청 후 진행하세요.");
             return;
         }
 		
@@ -25,7 +25,7 @@ public class HospitalRecordGenerator {
         User patient = UserStore.getUserByPatientCode(patientCode);
        
         if (patient == null) {
-            System.out.println("해당 환자코드의 환자가 존재하지 않습니다.");
+            System.out.println("❌ 해당 환자코드의 환자가 존재하지 않습니다.");
             return;
         }
         
@@ -46,7 +46,7 @@ public class HospitalRecordGenerator {
         File prescriptionFile = new File(baseDir + "/prescription.txt");
 
         if (!diagnosisFile.exists() || !prescriptionFile.exists()) {
-            System.out.println("파일이 존재하지 않습니다.");
+            System.out.println("❌ 파일이 존재하지 않습니다.");
             return;
         }
         
@@ -64,6 +64,7 @@ public class HospitalRecordGenerator {
             pw.println(patientCode);
         }
         
-        System.out.println("환자에게 전송할 파일들이 모두 저장되었습니다. ");
+        System.out.println("✅ 진단서 및 처방전 기록이 정상적으로 저장되었습니다.");
+        System.out.println("   → 생성 파일: diagnosis.txt, prescription.txt, timestamp.txt, patientCode.txt\n");
 	}
 }

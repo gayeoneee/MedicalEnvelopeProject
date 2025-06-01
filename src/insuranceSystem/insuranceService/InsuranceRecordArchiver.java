@@ -1,14 +1,19 @@
 package insuranceSystem.insuranceService;
 
-import java.io.*;
-import java.util.zip.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 // 최종 전자봉투 생성 및 보험사 outbox에 저장
 public class InsuranceRecordArchiver {
-
+	// [8단계] 최종 전자봉투 생성
+	// - record.enc, hash.txt, 서명들 포함한 final_envelope_*.zip 압축 및 보관
     public void archiveFinalEnvelope(String dir, String patientCode) throws Exception {
         System.out.println("📦 보험사 최종 전자봉투 생성 중...");
 
+        
         // 최종 전자봉투를 저장할 파일
         String insuranceOutboxDir = "src/data/insuranceOutbox/" + patientCode + "/";
         new File(insuranceOutboxDir).mkdirs();
@@ -51,10 +56,11 @@ public class InsuranceRecordArchiver {
             }
         }
 
-        System.out.println("✅ 최종 전자봉투 보관 완료! → " + zipFilePath);
+        System.out.println("📦 보험사 전용 최종 전자봉투를 생성하여 보관소에 안전하게 저장했습니다.");
     }
 
-    // (선택) 환자가 전송한 봉투를 별도로 저장하는 receive 메서드
+    // [0단계] 환자 → 전자봉투가 도착했는지 여부만 출력
+    // (선택)환자가 전송한 봉투를 별도로 저장하는 receive 메서드
     public void receiveEnvelopeFromPatient(String dir) {
         String patientCode = new File(dir).getName(); // P2025_001
         String zipFileName = "envelope_" + patientCode + ".zip"; // envelope_P2025_001.zip
@@ -62,9 +68,9 @@ public class InsuranceRecordArchiver {
         File zipFile = new File(dir, zipFileName);
 
         if (zipFile.exists()) {
-            System.out.println("📥 환자로부터 전자봉투 수신 완료 ");
+            System.out.println("📥 제출된 진료 기록 전자봉투를 성공적으로 수신했습니다. 보험 심사를 기다려주세요. ");
         } else {
-            System.out.println("⚠️ 경고: 해당 경로에 전자봉투가 없습니다!");
+            System.out.println("⚠️ 제출된 전자봉투가 확인되지 않습니다. 병원 측 전송 상태를 다시 확인해주세요.");
         }
     }
 

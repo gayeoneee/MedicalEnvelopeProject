@@ -15,6 +15,8 @@ public class EnvelopeDecryptor {
 	//     record.enc → AES로 복호화 → record_decrypted.zip 생성
 	
 	public static void decryptEnvelope(String patientId, String patientCode) throws Exception {
+        System.out.println("🔐 암호화된 진료기록을 복호화합니다...");
+		
 		// 1. 파일 경로 설정
 		String baseDir = "src/data/envelopes/" + patientCode;
 		
@@ -41,7 +43,6 @@ public class EnvelopeDecryptor {
             fos.write(decrypted);
         }
         
-        System.out.println("✅ record.enc 복호화 완료 → record_decrypted.zip 생성됨");
-
+        System.out.println("   → 복호화 완료 → record_decrypted.zip 생성됨\n");
 	}
 }

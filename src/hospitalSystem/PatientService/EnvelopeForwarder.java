@@ -25,6 +25,6 @@ public class EnvelopeForwarder {
         // 3. 전자봉투 복사
         Files.copy(Path.of(sourcePath), Path.of(targetPath), StandardCopyOption.REPLACE_EXISTING);
 
-        System.out.println("📤 전자봉투가 보험사로 성공적으로 전송되었습니다 → " + targetPath);
+        System.out.println("\n\n📤 진료기록이 보험사로 안전하게 전송되었습니다!");
 	}
 }

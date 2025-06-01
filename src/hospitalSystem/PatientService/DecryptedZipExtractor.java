@@ -45,6 +45,7 @@ public class DecryptedZipExtractor {
                }
         }
         
-        System.out.println("📂 복호화된 ZIP 압축 해제 완료 → 텍스트 파일 복원됨");
+        System.out.println("📂 복호화된 진료기록 압축 해제 완료");
+        System.out.println("   → diagnosis.txt, prescription.txt 파일 복원\n");
 	}
 }

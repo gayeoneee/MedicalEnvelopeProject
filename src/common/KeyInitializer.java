@@ -15,6 +15,9 @@ public class KeyInitializer {
 		// UserStore에서 직접 사용자 목록을 가져옴
 		Collection<User> allUsers = UserStore.getAllUsers();
 		
+		System.out.println("✅ 모든 사용자의 키를 생성합니다.");
+        System.out.println("==========================================================");
+        
 		for (User user : allUsers) {
 			
             String userId = user.getId();
@@ -22,7 +25,8 @@ public class KeyInitializer {
             
             generateAndSaveKeyPair(userId, role);
         }
-
+		
+		System.out.println("==========================================================");
         System.out.println("✅ 모든 사용자 키가 역할별 디렉토리에 저장되었습니다.");
 	}
 	
@@ -48,7 +52,7 @@ public class KeyInitializer {
             pubOut.writeObject(publicKey);		// 공개키 저장
             priOut.writeObject(privateKey);		// 개인키 저장
         }
-
+        
         System.out.println("🔑 [" + role.name() + "] 키 생성 완료 → " + dirPath);
 	}
 }
