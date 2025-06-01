@@ -19,6 +19,8 @@
 
 - 전체 프로젝트 구조
 ```plaintext
+MedicalEnvelopeProject/
+│
 src/
 ├── common/                         # 공통 유틸리티 및 로그인, 키 관리
 │   ├── Role.java                  # 사용자 역할 enum (DOCTOR, NURSE, PATIENT, UNDERWRITER, ADJUSTER)
