@@ -46,44 +46,44 @@
 ```
 src/
 └── data/
-├── records/
-│ └── P2025_001/
-│ ├── diagnosis.txt
-│ ├── prescription.txt
-│ ├── timestamp.txt
-│ ├── patientCode.txt
-│ ├── record_P2025_001.zip
-│ ├── hash.txt
-│ ├── sign_doctor.sig
-│ ├── sign_doctor_id.txt
-│ ├── record_P2025_001.enc
-│ ├── aes_for_patient.key
-│ ├── aes_for_insurance.key
-│ ├── sign_nurse.sig
-│ ├── sign_nurse_id.txt
-│ └── envelope_P2025_001.zip
-│
-├── envelopes/
-│ └── P2025_001/
-│ ├── record_P2025_001.enc
-│ ├── aes_for_patient.key
-│ ├── aes_for_insurance.key
-│ ├── hash.txt
-│ ├── sign_doctor.sig
-│ ├── sign_doctor_id.txt
-│ ├── sign_nurse.sig
-│ ├── sign_nurse_id.txt
-│ ├── record_decrypted.zip
-│ ├── diagnosis.txt
-│ └── prescription.txt
-│
-├── requests/
-│ └── P2025_001/
-│ └── request.txt
-│
-└── insuranceInbox/
-└── P2025_001/
-└── envelope_P2025_001.zip
+    ├── records/                        ← 병원에서 생성하는 원본 데이터
+    │   └── P2025_001/
+    │       ├── diagnosis.txt          ← [Hospital 1단계] 진단서
+    │       ├── prescription.txt       ← [Hospital 1단계] 처방전
+    │       ├── timestamp.txt          ← [Hospital 1단계] 진단 시간
+    │       ├── patientCode.txt        ← [Hospital 1단계] 환자 코드 기록
+    │       ├── record_P2025_001.zip   ← [Hospital 2단계] 압축된 기록
+    │       ├── hash.txt               ← [Hospital 2단계] SHA-256 해시
+    │       ├── sign_doctor.sig        ← [Hospital 3단계] 의사 서명
+    │       ├── sign_doctor_id.txt     ← [Hospital 3단계] 의사 ID
+    │       ├── record_P2025_001.enc   ← [Hospital 4단계] 암호화된 기록
+    │       ├── aes_for_patient.key    ← [Hospital 4단계] 환자용 암호화 키
+    │       ├── aes_for_insurance.key  ← [Hospital 4단계] 보험사용 암호화 키
+    │       ├── sign_nurse.sig         ← [Hospital 5단계] 간호사 서명
+    │       ├── sign_nurse_id.txt      ← [Hospital 5단계] 간호사 ID
+    │       └── envelope_P2025_001.zip ← [Hospital 5단계 or 6단계] 최종 전자봉투 (병원 기준)
+    │
+    ├── envelopes/                     ← 환자가 수신한 전자봉투 압축 해제 위치
+    │   └── P2025_001/
+    │       ├── record_P2025_001.enc
+    │       ├── aes_for_patient.key
+    │       ├── aes_for_insurance.key
+    │       ├── hash.txt
+    │       ├── sign_doctor.sig
+    │       ├── sign_doctor_id.txt
+    │       ├── sign_nurse.sig
+    │       ├── sign_nurse_id.txt
+    │       ├── record_decrypted.zip     ← [Patient 2단계] 복호화된 zip
+    │       ├── diagnosis.txt            ← [Patient 3단계] 복원된 진단서
+    │       └── prescription.txt         ← [Patient 3단계] 복원된 처방전
+    │
+    ├── requests/                      ← 환자가 진료 요청한 내역 저장
+    │   └── P2025_001/
+    │       └── request.txt              ← [0단계] 희망 심사관 코드 저장
+    │
+    └── insuranceInbox/               ← 보험사에게 전달된 전자봉투 위치
+        └── P2025_001/
+            └── envelope_P2025_001.zip   ← [Patient 5단계] 보험사로 제출
 ```
 
 ### 📎 파일 명세 요약
