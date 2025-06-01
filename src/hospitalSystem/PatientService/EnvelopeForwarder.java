@@ -19,7 +19,7 @@ public class EnvelopeForwarder {
         // 2. 전송 할 파일
         File sourceFile = new File(sourcePath);
         if (!sourceFile.exists()) {
-        	throw new Exception("5전송할 전자봉투가 존재하지 않습니다.");
+        	throw new Exception("전송할 전자봉투가 존재하지 않습니다.");
         }
         
         // 3. 전자봉투 복사
