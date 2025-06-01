@@ -92,7 +92,7 @@ public User login(Role... allowedRoles) {
 
 #### ▶ 의사 수행 단계
 | 단계 | 기능 설명 | 클래스 / 메서드 |
-|------|------------|------------------|
+|--------|------------|------------------|
 | [1단계] | 진료 기록 생성 (`diagnosis.txt`, `prescription.txt`, `timestamp.txt`, `patientCode.txt`) | `HospitalRecordGenerator.generateMedicalRecordByCode(User, String)` |
 | [2단계] | 진료 기록 압축 및 해시 생성 → `record_*.zip`, `hash.txt` | `RecordCompressor.compressAndHash(String)` |
 | [3단계] | 해시 서명 → `sign_doctor.sig`, `sign_doctor_id.txt` | `SignatureCreator.signHash(User, String)` |
@@ -101,7 +101,7 @@ public User login(Role... allowedRoles) {
 
 #### ▶ 간호사 수행 단계
 | 단계 | 기능 설명 | 클래스 / 메서드 |
-|------|------------|------------------|
+|---------|------------|------------------|
 | [6단계] | 간호사 서명 → `sign_nurse.sig`, `sign_nurse_id.txt` | `SignatureCreator.signHash(User, String)` |
 | [7단계] | 전자봉투 최종 생성 (간호사 서명 포함) → `envelope_*.zip`  (최종 봉투 완성)| `EnvelopeBuilder.createEnvelope(User, String)` |
 
