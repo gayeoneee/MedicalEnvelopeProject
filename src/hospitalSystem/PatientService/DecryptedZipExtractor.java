@@ -1,11 +1,15 @@
 package hospitalSystem.PatientService;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class DecryptedZipExtractor {
-	// [3] 복호화된 ZIP 파일(record_decrypted.zip) 압축 해제
+	// [3단계] 복호화된 ZIP 파일(record_decrypted.zip) 압축 해제
 	// → diagnosis.txt, prescription.txt 등으로 복원
 	
 	public static void extractDecryptedRecord(String patientCode) throws Exception {

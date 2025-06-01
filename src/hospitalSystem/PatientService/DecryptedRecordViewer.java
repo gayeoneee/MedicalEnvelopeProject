@@ -1,25 +1,20 @@
 package hospitalSystem.PatientService;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.security.PublicKey;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
+import java.nio.file.Files;
+
+import java.security.PublicKey;
 
 import crypto.RSACryptoUtil;
 import common.KeyManager;
 
+// [4단계] 복호화된 결과 전자서명 검증 후 열람
+// diagnosis.txt, prescription.txt 출력
 public class DecryptedRecordViewer {
-	// [4] 복호화된 결과 열람 (텍스트 파일 읽기)
-	// diagnosis.txt, prescription.txt 출력
-	
-	// 리팩토링 D : 환자가 진료기록 열람 시 다음 두 전자서명 파일의 진위를 RSA 서명 검증을 통해 확인
-	
-    // 공개키 경로 하드코딩 (향후 개선 가능)
-//    private static final Map<String, String> PUBLIC_KEY_PATHS = Map.of(
-//            "DOCTOR", "src/keys/doctor/doc1/public.key",
-//            "NURSE", "src/keys/nurse/nurse1/public.key"
-//    );
-    // -> 리펙토링 E
     // 역할에 따른 서명 파일 이름 반환
     private static String getSigFileName(String role) {
         return role.equals("DOCTOR") ? "sign_doctor.sig" : "sign_nurse.sig";

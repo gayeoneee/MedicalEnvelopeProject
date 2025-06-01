@@ -9,14 +9,11 @@ public class UserStore {
 	/*UserStore는 인스턴스를 생성하지 않고도 로그인 기능 등에서 직접 호출해서 사용하는 클래스이므로, 모든 필드와 메서드가 static이어야 한다 */
 	
 	// 로그인 ID 기준으로 저장된 사용자
-//	private static final Map<String, User> users = new HashMap<>();
     private static final Map<String, User> usersById = new HashMap<>();
 	
-	/* 리팩토링A */
-    // 환자 식별 코드(Pxxxx_xxx) 기준으로 저장된 사용자 (환자만 해당)
+    // 리팩토링 9 : 환자 식별 코드(Pxxxx_xxx) 기준으로 저장된 사용자 (환자만 해당)
     private static final Map<String, User> usersByPatientCode = new HashMap<>();
-	
-    // 리팩토링 B
+    
     private static final Map<String, User> usersByUnderwriterCode = new HashMap<>();
     
     static {
@@ -25,8 +22,6 @@ public class UserStore {
         usersById.put("nurse1", new User("nurse1", "abcd", Role.NURSE));
 
         // 환자
-//        users.put("patient1", new User("patient1", "p123", Role.PATIENT, "P2025_001"));
-        // 리팩토링A
         User patient1 = new User("patient1", "p123", Role.PATIENT, "P2025_001");
         usersById.put("patient1", patient1);
         usersByPatientCode.put(patient1.getPatientCode(), patient1);
@@ -54,8 +49,9 @@ public class UserStore {
     public static Collection<User> getAllUsers() {
         return usersById.values();
     }
+   
 
-    // 환자 식별 코드로 환자 조회 (환자만 가능)
+    // 환자 식별 코드로 환자 조회
     public static User getUserByPatientCode(String patientCode) {
         return usersByPatientCode.get(patientCode);
     }

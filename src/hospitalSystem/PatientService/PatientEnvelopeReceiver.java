@@ -9,7 +9,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class PatientEnvelopeReceiver {
-	// [1] 전자봉투 수신 및 압축 해제 
+	// [1단계] 전자봉투 수신 및 압축 해제 
 	// ex) envelope_P2025_001.zip → record.enc, hash.txt 등 파일 추출
 	//     data/envelopes/P2025_001/ 에 저장
 	public static void receiveEnvelope(String patientCode) throws Exception {
@@ -19,7 +19,7 @@ public class PatientEnvelopeReceiver {
         
         // 2. zip파일 추출 저장할 디렉토리 설정
         String destDir = "src/data/envelopes/" + patientCode;
-        new File(destDir).mkdirs(); //리팩토링 (만약 디렉토리가 없으면 만들기로)
+        new File(destDir).mkdirs();
         
         
         // 2. 전자봉투 가져오기
@@ -31,37 +31,7 @@ public class PatientEnvelopeReceiver {
         
         
         // 3. zip 파일 열기
-        // 참고 코드 (공부함) : https://velog.io/@wlgns3855/JAVA-java%EB%A1%9C-zip%ED%8C%8C%EC%9D%BC-%EC%95%95%EC%B6%95%ED%92%80%EA%B8%B0        
-//        FileInputStream fis = new FileInputStream(zipFile);
-//        BufferedInputStream bis = new BufferedInputStream(fis);
-//        
-//        ZipInputStream zis = new ZipInputStream(bis);
-//        ZipEntry zipEntry = null;
-//        
-//        while( (zipEntry = zis.getNextEntry()) != null ) {
-//        	String filePath = destDir + "/" + zipEntry.getName();
-//        	
-//        	File outFile = new File(filePath);
-//        	
-//        	FileOutputStream fos = new FileOutputStream(outFile);
-//        	BufferedOutputStream bos = new BufferedOutputStream(fos);
-//        	
-//        	int read;
-//        	
-//        	while( (read = zis.read()) != -1 ) {
-//        		bos.write(read);; //1바이트씩 기록
-//        	}
-//        	
-//        	bos.close();
-//        	fos.close();
-//        }
-//        
-//        zis.close();
-//        bis.close();
-//        fis.close();
-        
-        // 리팩토링
-        
+        // 참고 코드 (공부함) : https://velog.io/@wlgns3855/JAVA-java%EB%A1%9C-zip%ED%8C%8C%EC%9D%BC-%EC%95%95%EC%B6%95%ED%92%80%EA%B8%B0              
         try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(zipFile));
                 ZipInputStream zis = new ZipInputStream(bis)) {
 

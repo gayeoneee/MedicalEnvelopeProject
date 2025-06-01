@@ -1,28 +1,51 @@
 package hospitalSystem.hospitalService;
 
-import java.io.*;
+import common.Role;
+import common.User;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class EnvelopeBuilder {
-	// 환자 코드 기반 전자봉투 생성
-	public static void createEnvelope(String patientCode) throws Exception {
+	// 환자 코드 기반 전자봉투 생성 [5단계] 의사 1차 전자봉투 생성 + [7단계] 간호사 최종 전자봉투 생성
+	public static void createEnvelope(User user, String patientCode) throws Exception {
         // 1. 환자 기록 디렉토리 확인
         String baseDir = "src/data/records/" + patientCode;
         
-        // 2. 전자봉투 구성 파일 
-        String[] filesToInclude = {
-        		"record_" + patientCode + ".enc",
+        // 1. 역할별 전자봉투 구성 파일 정의
+        String[] filesToInclude;
+
+        if (user.getRole() == Role.NURSE) {
+            filesToInclude = new String[]{
+                "record_" + patientCode + ".enc",
                 "aes_for_patient.key",
                 "aes_for_insurance.key",
                 "hash.txt",
                 "sign_doctor.sig",
                 "sign_nurse.sig",
-                "sign_doctor_id.txt",  // ← 추가
-                "sign_nurse_id.txt"    // ← 추가
-        };
-        
-        // 최종 전자봉투 zip 파일
+                "sign_doctor_id.txt",
+                "sign_nurse_id.txt"
+            };
+        } 
+        else if (user.getRole() == Role.DOCTOR) {
+            filesToInclude = new String[]{
+                "record_" + patientCode + ".enc",
+                "aes_for_patient.key",
+                "aes_for_insurance.key",
+                "hash.txt",
+                "sign_doctor.sig",
+                "sign_doctor_id.txt"
+            };
+        } 
+        else {
+            System.out.println("⛔ 전자봉투 생성을 지원하지 않는 역할입니다.");
+            return;
+        }
+
+        // 2. ZIP 압축 파일 생성
         File zipFile = new File(baseDir + "/envelope_" + patientCode + ".zip");
         
         try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile))) {
@@ -50,5 +73,7 @@ public class EnvelopeBuilder {
         
         System.out.println("📦 전자봉투 생성 완료: envelope_" + patientCode + ".zip");
 	}
+	
+	
 	
 }

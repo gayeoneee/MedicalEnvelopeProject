@@ -12,8 +12,9 @@ import java.nio.file.Path;
 import java.security.PrivateKey;
 
 public class SignatureCreator {
-	// 전자서명 생성 - [3단계] 의사 전자서명 + 
+	// 전자서명 생성 - [3단계] 의사 전자서명 생성/ [5단계] 간호사 전자서명 생성 
 	public static void signHash(User user, String patientCode) throws Exception {
+		
 		// 1. 권한 확인 (의사 또는 간호사만 가능)
         if (user.getRole() != Role.DOCTOR && user.getRole() != Role.NURSE) {
             System.out.println("서명 권한이 없습니다.");

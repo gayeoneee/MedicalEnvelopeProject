@@ -54,10 +54,6 @@ public class EncryptionProcessor {
         PublicKey patientPublicKey = KeyManager.loadPublicKey(patientKeyPath);
 
         // 5-2. 보험사(under1) 공개키 로딩
-//        String insuranceKeyPath = "src/keys/underwriter/under1/public.key";
-//        PublicKey insurancePublicKey = KeyManager.loadPublicKey(insuranceKeyPath);
-        
-        // 리팩토링 B -> 보험사 로직 변경 (목업에서 환자가 요청 시 넘긴 심사관 코드로)
         String underwriterCode = RecordRequestSubmitter.readUnderwriterCode(patientCode);
         
         // 심사관 코드 → User 객체 조회 (UserStore에 해당 메서드 필요)

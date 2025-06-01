@@ -1,15 +1,12 @@
 package hospitalSystem.hospitalService;
 
-import common.Role;
 import common.User;
 import common.UserStore;
 import hospitalSystem.PatientService.RecordRequestSubmitter; // 리팩토링 C
 
 import java.io.*;
-import java.nio.file.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Collection;
 
 public class HospitalRecordGenerator {
 	
@@ -23,24 +20,12 @@ public class HospitalRecordGenerator {
         }
 		
 		
-		// 1. 환자 코드로 UserStore에서 사용자 검색
-		/*
-        User patient = null;
-        
-        Collection<User> allUsers = UserStore.getAllUsers();
-        for (User u : allUsers) {
-            if (u.getRole() == Role.PATIENT && patientCode.equals(u.getPatientCode())) {
-                patient = u;
-                break;
-            }
-        }
-        */
-        
-        // 리팩토링 A (UserStore도 수정됨)
+		// 1. 환자 코드로 UserStore에서 사용자 검색        
+        // 리팩토링 9 : 전체 사용자 탐색 대신 환자 코드 검색을 통해 사용자 검색 (효율성)
         User patient = UserStore.getUserByPatientCode(patientCode);
        
         if (patient == null) {
-            System.out.println("해당 식별 코드의 환자가 존재하지 않습니다.");
+            System.out.println("해당 환자코드의 환자가 존재하지 않습니다.");
             return;
         }
         
@@ -55,8 +40,8 @@ public class HospitalRecordGenerator {
             return;
         }
         
+
         // 3. 진단서 및 처방전 존재 확인
-        /* 후에 리팩토링으로 목업처리된 진단서, 처방전만 불러오는 게 아닌 해당 디렉터리 아래에 있는 파일 모두 불러오는 방식으로 수정 */
         File diagnosisFile = new File(baseDir + "/diagnosis.txt");
         File prescriptionFile = new File(baseDir + "/prescription.txt");
 
@@ -65,37 +50,20 @@ public class HospitalRecordGenerator {
             return;
         }
         
+        
+        // 리팩토링 8 : PrintWriter 출력 자원 자동 해제 처리
         // 4. timestamp.txt 생성
         String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        FileOutputStream fos = new FileOutputStream(baseDir + "/timestamp.txt");
-        PrintWriter pw = new PrintWriter(fos);
-        pw.println(timestamp);
         
-        fos.close();
-        pw.close();
-        
-        // 리팩토링
-        /*
         try (PrintWriter pw = new PrintWriter(new FileOutputStream(baseDir + "/timestamp.txt"))) {
             pw.println(timestamp);
         }
-        */
         
         // 5. patientCode.txt 생성
-        FileOutputStream fos2 = new FileOutputStream(baseDir + "/patientCode.txt");
-        PrintWriter pw2 = new PrintWriter(fos2);
-        pw2.println(timestamp);
-        
-        fos2.close();
-        pw2.close();
-        
-        //리팩토링
-        /*
         try (PrintWriter pw = new PrintWriter(new FileOutputStream(baseDir + "/patientCode.txt"))) {
             pw.println(patientCode);
         }
-        */
         
-        System.out.println("✅ 기록 보완 완료 → " + baseDir);
+        System.out.println("환자에게 전송할 파일들이 모두 저장되었습니다. ");
 	}
 }
