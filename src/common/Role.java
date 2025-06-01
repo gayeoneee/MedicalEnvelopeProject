@@ -1,10 +1,20 @@
 package common;
 
-// enum 관련 규칙 들어서 리팩토링 할 수 있을 듯
+// 리펙토링 7 : 열거형 구조 개선
 public enum Role {
-	DOCTOR,       // 의사
-    NURSE,        // 간호사
-    PATIENT,      // 환자
-    UNDERWRITER,  // 심사관 (보험사)
-    ADJUSTER      // 보상 담당자 (보험사)
+    DOCTOR(1),
+    NURSE(2),
+    PATIENT(3),
+    UNDERWRITER(4),
+    ADJUSTER(5);
+
+    private final int level;
+    
+    Role(int level) { 
+    	this.level = level; 
+    }
+    
+    public int getLevel() { 
+    	return level; 
+    }
 }

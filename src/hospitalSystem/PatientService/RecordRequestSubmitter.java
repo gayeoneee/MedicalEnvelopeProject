@@ -6,7 +6,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 
-// 리팩토링 C : 환자가 먼저 병원에 진료 요청을 해야만 병원에서 진료기록 생성 가능하도록 흐름을 구성
+// [0단계] 환자가 먼저 병원에 진료 요청을 해야만 병원에서 진료기록 생성 가능하도록 흐름을 구성
 public class RecordRequestSubmitter {
 	// 진료 요청 제출 (파일 생성)
 	public static void submitRequest(String patientCode, String underwriterCode) throws IOException {

@@ -1,12 +1,13 @@
 package hospitalSystem.hospitalService;
 
-import crypto.HashUtil;
-
-import java.io.*;
-import java.nio.file.*;
-import java.security.MessageDigest;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.file.Files;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import crypto.HashUtil;
 
 public class RecordCompressor {
 	// [2단계] 압축 + 해시 생성 → hash.txt 저장
@@ -14,7 +15,6 @@ public class RecordCompressor {
 		String baseDir = "src/data/records/" + patientCode;
 		
 		/* 1. 압축 */
-		// 압축 대상 파일들 -> 리팩토링 시 그 아래 파일들을 가져오는 식으로
         String[] filesToZip = {
                 "diagnosis.txt",
                 "prescription.txt",

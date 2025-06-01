@@ -7,10 +7,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.security.PrivateKey;
-import java.util.Arrays;
+
 
 public class EnvelopeDecryptor {
-	// [2]암호화된 진료기록 복호화
+	// [2단계] 암호화된 진료기록 복호화
 	// ex) aes_for_patient.key → 개인키로 복호화 → AES 키 획득
 	//     record.enc → AES로 복호화 → record_decrypted.zip 생성
 	

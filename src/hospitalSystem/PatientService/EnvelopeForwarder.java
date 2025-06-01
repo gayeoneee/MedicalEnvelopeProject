@@ -6,8 +6,9 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
 public class EnvelopeForwarder {
-	// [5] 전자봉투 보험사로 전송
+	// [5단계] 전자봉투 보험사로 전송
 	// envelope_P2025_001.zip → data/insuranceInbox/ 폴더로 복사
+	
 	public static void forwardEnvelope(String patientCode) throws Exception {
 		// 1. 파일 경로 설정
 		String sourcePath = "src/data/records/" + patientCode + "/envelope_" + patientCode + ".zip";	// 병원에서 받은 전자봉투 경로
