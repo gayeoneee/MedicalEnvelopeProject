@@ -51,6 +51,7 @@ public class HospitalSystemApp {
             case DOCTOR:
                 System.out.println("의사 기능 실행 중...");
                 
+             // 리펙토링 1 : try-with-resources로 개선
                 try (Scanner scanner = new Scanner(System.in)) {
                 	
                 	System.out.print("진료할 환자 식별 코드(Pxxxx_xxx)를 입력하세요: ");
