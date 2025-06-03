@@ -14,7 +14,7 @@ public class LoginService {
 		    System.out.print("아이디 입력: ");
 		    String id = scanner.nextLine();
 		    
-		    // 리팩토링 : 보안 입력 처리 String → char[]
+		    // 리팩토링 9 : 보안 입력 처리 String → char[]
 		    System.out.print("비밀번호 입력: ");
 //		    String pw = scanner.nextLine();
 		    String pwInput = scanner.nextLine();
