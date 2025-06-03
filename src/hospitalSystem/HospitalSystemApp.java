@@ -17,7 +17,7 @@ public class HospitalSystemApp {
 		System.out.println("🏥 병원 시스템");
 		System.out.println("==========================================================");
 		
-        // 🔐 로그인
+        // 로그인
 		Scanner scanner = new Scanner(System.in);
         User user = login();
         
@@ -26,12 +26,12 @@ public class HospitalSystemApp {
             return;
         }
         
-        // 🧑‍💼 역할에 따른 기능 실행
+        //‍ 역할에 따른 기능 실행
         handleRoleBasedActions(user);
 	}
     
 	
-	// 🔐 로그인 전용 메서드
+	// 로그인 전용 메서드
 	private static User login() throws Exception {
         LoginService loginService = new LoginService();
 
@@ -45,13 +45,14 @@ public class HospitalSystemApp {
         return requestFile.exists();
     }
 	
-	// 🧑‍⚕️ 로그인된 역할에 따라 동작 분기
+	// 로그인된 역할에 따라 동작 분기
     private static void handleRoleBasedActions(User user) {
         switch (user.getRole()) {
             case DOCTOR:
                 System.out.println("의사 기능 실행 중...");
                 // TODO: 진료기록 생성, 서명 등
                 
+             // 리펙토링 1 : try-with-resources로 개선
                 try (Scanner scanner = new Scanner(System.in)) {
                 	
                 	System.out.print("진료할 환자 식별 코드(Pxxxx_xxx)를 입력하세요: ");

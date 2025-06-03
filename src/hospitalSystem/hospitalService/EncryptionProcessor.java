@@ -39,7 +39,7 @@ public class EncryptionProcessor {
             fos.write(encryptedRecord);
         }
 
-        // ✅ 저장된 record.enc 파일 존재 확인 (추가된 로직)
+        // 저장된 record.enc 파일 존재 확인 (추가된 로직)
         File encryptedFile = new File(encPath);
         if (!encryptedFile.exists()) {
             System.out.println("❌ record.enc 파일이 저장되지 않았습니다!");

@@ -19,7 +19,7 @@ public class InsuranceSystemApp {
         System.out.println("💼 보험사 시스템");
 		System.out.println("==========================================================");
         
-        // 🔐 로그인
+        // 로그인
         User user = login();
 
         if (user == null) {
@@ -27,11 +27,11 @@ public class InsuranceSystemApp {
             return;
         }
         
-        // 🧑‍💼 역할에 따른 기능 실행
+        // 역할에 따른 기능 실행
         handleRoleBasedActions(user);
     }
 
-    // 🔐 로그인 전용 메서드
+    // 로그인 전용 메서드
     private static User login() throws Exception {
         LoginService loginService = new LoginService();
 
@@ -39,7 +39,7 @@ public class InsuranceSystemApp {
         return loginService.login(Role.PATIENT, Role.UNDERWRITER, Role.ADJUSTER);
     }
 
-    // 🧑‍💼 로그인된 사용자 역할에 따라 기능 분기
+    // 로그인된 사용자 역할에 따라 기능 분기
     private static void handleRoleBasedActions(User user) {
         switch (user.getRole()) {
             case PATIENT:
@@ -54,7 +54,7 @@ public class InsuranceSystemApp {
                     System.out.println("❌ 오류 발생: " + e.getMessage());
                 }
                 break;
-            // 🧑‍⚖️ [1~5단계] 심사관 (Underwriter)    
+            // [1~5단계] 심사관 (Underwriter)    
             case UNDERWRITER: 
                 System.out.println("심사관 기능 실행 중...");
                 try {
@@ -122,7 +122,7 @@ public class InsuranceSystemApp {
                     System.out.println("❌ 오류 발생: " + e.getMessage());
                 }
                 break;
-            // 🧑‍💼 [7~8단계] 보상담당자 (Adjuster)
+            // [7~8단계] 보상담당자 (Adjuster)
             case ADJUSTER:
                 System.out.println("관리자 기능 실행 중...");
                 try (Scanner scanner = new Scanner(System.in)) {

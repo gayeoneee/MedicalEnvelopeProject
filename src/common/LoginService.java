@@ -23,7 +23,7 @@ public class LoginService {
 
 		    User user = UserStore.getUserById(id);
 
-		    // ✅ 로그인 성공 시 
+		    // 로그인 성공 시 
 		    if (user != null && HashUtil.verifySHA256(pw, user.getPassword())) {
 		    	Arrays.fill(pw, ' '); // 입력 후 메모리 정리
 		        
@@ -37,7 +37,7 @@ public class LoginService {
 		            System.out.println("⛔ 이 시스템에서 허용되지 않는 역할입니다.");
 		        }
 		    }
-		    // ❌ 로그인 실패
+		    // 로그인 실패
 		    else {
 		        if (user == null) {
 		            System.out.println("❌ 로그인 실패: 존재하지 않는 아이디입니다.");

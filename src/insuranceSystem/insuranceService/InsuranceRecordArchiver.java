@@ -18,10 +18,10 @@ public class InsuranceRecordArchiver {
         String insuranceOutboxDir = "src/data/insuranceOutbox/" + patientCode + "/";
         new File(insuranceOutboxDir).mkdirs();
 
-        // ✅ 최종 전자봉투 경로 지정
+        // 최종 전자봉투 경로 지정
         String zipFilePath = insuranceOutboxDir + "final_envelope_" + patientCode + ".zip";
 
-        // ✅ 포함할 파일 목록
+        // 포함할 파일 목록
         String[] filesToInclude = {
             "aes_for_patient.key",
             "aes_for_insurance.key",
@@ -33,7 +33,7 @@ public class InsuranceRecordArchiver {
             "sign_adjuster.sig"
         };
 
-        // ✅ ZIP 생성 및 파일 추가
+        // ZIP 생성 및 파일 추가
         try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFilePath))) {
             for (String relativePath : filesToInclude) {
                 File file = new File(dir, relativePath);
