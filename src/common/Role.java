@@ -1,6 +1,6 @@
 package common;
 
-// 리펙토링 7 : 열거형 구조 개선
+// 리펙토링 6 : 열거형 구조 개선
 public enum Role {
     DOCTOR(1),
     NURSE(2),

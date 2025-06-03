@@ -13,7 +13,7 @@ public class UserStore {
 	// 로그인 ID 기준으로 저장된 사용자
     private static final Map<String, User> usersById = new HashMap<>();
 	
-    // 리팩토링 9 : 환자 식별 코드(Pxxxx_xxx) 기준으로 저장된 사용자 (환자만 해당)
+    // 리팩토링 7 : 환자 식별 코드(Pxxxx_xxx) 기준으로 저장된 사용자 (환자만 해당)
     private static final Map<String, User> usersByPatientCode = new HashMap<>();
     
     private static final Map<String, User> usersByUnderwriterCode = new HashMap<>();

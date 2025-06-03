@@ -13,7 +13,7 @@ public class HospitalRecordGenerator {
 	public static void generateMedicalRecordByCode(User doctor, String patientCode) throws Exception {
 		
 		// 1. 환자 코드로 UserStore에서 사용자 검색        
-        // 리팩토링 9 : 전체 사용자 탐색 대신 환자 코드 검색을 통해 사용자 검색 (효율성)
+        // 리팩토링 7 : 전체 사용자 탐색 대신 환자 코드 검색을 통해 사용자 검색
         User patient = UserStore.getUserByPatientCode(patientCode);
        
         if (patient == null) {
@@ -43,7 +43,6 @@ public class HospitalRecordGenerator {
         }
         
         
-        // 리팩토링 8 : PrintWriter 출력 자원 자동 해제 처리
         // 4. timestamp.txt 생성
         String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         

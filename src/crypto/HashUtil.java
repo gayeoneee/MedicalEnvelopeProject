@@ -17,7 +17,7 @@ public class HashUtil {
     }
     
     
-    /* 리팩토링 10 : 비밀번호는 해시 함수를 이용하여 저장, 비교 */
+    /* 리팩토링 8 : 비밀번호는 해시 함수를 이용하여 저장, 비교 */
     
     // String 입력용 SHA-256 해시 생성 → 16진수 문자열 반환
     public static String generateSHA256(String input) throws Exception {

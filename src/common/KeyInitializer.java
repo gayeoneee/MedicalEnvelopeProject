@@ -45,7 +45,6 @@ public class KeyInitializer {
         String publicFilePath = dirPath + "/public.key";
         String privateFilePath = dirPath + "/private.key";
         
-        // 리팩토링 6 : 자동 close가 필요한 자원은 try-with-resources 구문으로 안전하게 처리
         try (ObjectOutputStream pubOut = new ObjectOutputStream(new FileOutputStream(publicFilePath));
              ObjectOutputStream priOut = new ObjectOutputStream(new FileOutputStream(privateFilePath))) {
 

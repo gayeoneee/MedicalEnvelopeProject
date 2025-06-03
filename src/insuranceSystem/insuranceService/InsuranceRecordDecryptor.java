@@ -18,6 +18,8 @@ public class InsuranceRecordDecryptor {
 			String privateKeyPath = "src/keys/underwriter/" + underwriterId + "/private.key";
 	        PrivateKey privateKey = KeyManager.loadPrivateKey(privateKeyPath);
 	        
+	        
+	        // 리팩토링 2 : FileInputStream 객체 try-with-resources 적용하여 안전하게 닫게함
 	        File aesKeyFile = new File(baseDir + "/aes_for_insurance.key");
 	        byte[] encryptedAESKey;
 	        try (FileInputStream fis = new FileInputStream(aesKeyFile)) {
