@@ -21,24 +21,21 @@ public class UserStore {
     static {
         try {
             // 병원 관계자
-            usersById.put("doc1", new User("doc1", HashUtil.generateSHA256("1234"), Role.DOCTOR));
-            usersById.put("nurse1", new User("nurse1", HashUtil.generateSHA256("abcd"), Role.NURSE));
+            usersById.put("doc1", new User("doc1", HashUtil.generateSHA256("d1234"), Role.DOCTOR));
+            usersById.put("nurse1", new User("nurse1", HashUtil.generateSHA256("n1234"), Role.NURSE));
 
             // 환자
-            User patient1 = new User("patient1", HashUtil.generateSHA256("p123"), Role.PATIENT, "P2025_001");
+            User patient1 = new User("patient1", HashUtil.generateSHA256("p1234"), Role.PATIENT, "P2025_001");
             usersById.put("patient1", patient1);
             usersByPatientCode.put(patient1.getPatientCode(), patient1);
 
-            User patient2 = new User("patient2", HashUtil.generateSHA256("p456"), Role.PATIENT, "P2025_002");
-            usersById.put("patient2", patient2);
-            usersByPatientCode.put(patient2.getPatientCode(), patient2);
 
             // 보험사 관계자
-            User under1 = new User("under1", HashUtil.generateSHA256("u111"), Role.UNDERWRITER, null, "U2025_001");
+            User under1 = new User("under1", HashUtil.generateSHA256("u1234"), Role.UNDERWRITER, null, "U2025_001");
             usersById.put("under1", under1);
             usersByUnderwriterCode.put(under1.getUnderwriterCode(), under1);
 
-            usersById.put("adjust1", new User("adjust1", HashUtil.generateSHA256("a111"), Role.ADJUSTER));
+            usersById.put("adjust1", new User("adjust1", HashUtil.generateSHA256("a1234"), Role.ADJUSTER));
             
         } catch (Exception e) {
             System.out.println("⚠️ 사용자 초기화 중 오류: " + e.getMessage());

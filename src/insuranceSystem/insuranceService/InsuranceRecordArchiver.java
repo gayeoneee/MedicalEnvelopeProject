@@ -60,7 +60,6 @@ public class InsuranceRecordArchiver {
     }
 
     // [0단계] 환자 → 전자봉투가 도착했는지 여부만 출력
-    // (선택)환자가 전송한 봉투를 별도로 저장하는 receive 메서드
     public void receiveEnvelopeFromPatient(String dir) {
         String patientCode = new File(dir).getName(); // P2025_001
         String zipFileName = "envelope_" + patientCode + ".zip"; // envelope_P2025_001.zip

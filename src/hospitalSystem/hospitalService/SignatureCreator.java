@@ -45,7 +45,7 @@ public class SignatureCreator {
             fos.write(signature);
         }
         
-        // 서명자 ID 파일 생성 -> 리팩토링 E
+        // 서명자 ID 파일 생성 
         String idFileName = (user.getRole() == Role.DOCTOR) ? "sign_doctor_id.txt" : "sign_nurse_id.txt";
         Files.writeString(Path.of(baseDir, idFileName), user.getId());
 

@@ -2,7 +2,6 @@ package hospitalSystem.hospitalService;
 
 import common.User;
 import common.UserStore;
-import hospitalSystem.PatientService.RecordRequestSubmitter; // 리팩토링 C
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -12,13 +11,6 @@ public class HospitalRecordGenerator {
 	
 	// [1단계] 환자 식별 코드(Pxxxx-xxx) 기반 진료 기록 파일 생성
 	public static void generateMedicalRecordByCode(User doctor, String patientCode) throws Exception {
-		// 리팩토링 C
-		// 0. 진료 요청 존재 여부 확인
-        if (!RecordRequestSubmitter.hasRequest(patientCode)) {
-            System.out.println("❌ 진료 요청이 존재하지 않습니다. 요청 후 진행하세요.");
-            return;
-        }
-		
 		
 		// 1. 환자 코드로 UserStore에서 사용자 검색        
         // 리팩토링 9 : 전체 사용자 탐색 대신 환자 코드 검색을 통해 사용자 검색 (효율성)

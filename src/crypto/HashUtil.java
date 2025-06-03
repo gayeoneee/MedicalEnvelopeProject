@@ -24,13 +24,7 @@ public class HashUtil {
         byte[] hashed = generateSHA256(input.getBytes("UTF-8"));
         return bytesToHex(hashed);
     }
-
-    // String 입력값과 저장된 해시(String)를 비교
-    public static boolean verifySHA256(String input, String expectedHash) throws Exception {
-        String actualHash = generateSHA256(input);
-        return actualHash.equals(expectedHash);
-    }
-
+    
     // 내부 유틸: 바이트 배열 → 16진수 문자열
     private static String bytesToHex(byte[] hash) {
         StringBuilder sb = new StringBuilder();
@@ -38,5 +32,16 @@ public class HashUtil {
             sb.append(String.format("%02x", b));
         }
         return sb.toString();
+    }
+
+    // String 입력값과 저장된 해시(String)를 비교
+    public static boolean verifySHA256(String input, String expectedHash) throws Exception {
+        String actualHash = generateSHA256(input);
+        return actualHash.equals(expectedHash);
+    }
+    
+    // char[] 입력값과 저장된 해시(String)를 비교
+    public static boolean verifySHA256(char[] input, String expectedHash) throws Exception {
+        return verifySHA256(new String(input), expectedHash);  // 내부적으로 String 기반 함수 재활용
     }
 }

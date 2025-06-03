@@ -13,15 +13,21 @@ public class LoginService {
 
 		    System.out.print("아이디 입력: ");
 		    String id = scanner.nextLine();
-
+		    
+		    // 리팩토링 : 보안 입력 처리 String → char[]
 		    System.out.print("비밀번호 입력: ");
-		    String pw = scanner.nextLine();
+//		    String pw = scanner.nextLine();
+		    String pwInput = scanner.nextLine();
+            char[] pw = pwInput.toCharArray();
+            pwInput = null; // String 참조 제거
 
 		    User user = UserStore.getUserById(id);
 
-		    // ✅ 로그인 성공 시
+		    // ✅ 로그인 성공 시 
 		    if (user != null && HashUtil.verifySHA256(pw, user.getPassword())) {
-		        List<Role> allowed = Arrays.asList(allowedRoles);
+		    	Arrays.fill(pw, ' '); // 입력 후 메모리 정리
+		        
+		    	List<Role> allowed = Arrays.asList(allowedRoles);
 
 		        if (allowed.contains(user.getRole())) {
 		            System.out.println("\n✅ 로그인 성공!");
@@ -42,5 +48,5 @@ public class LoginService {
 
 		    return null;
 		}
-
 }
+

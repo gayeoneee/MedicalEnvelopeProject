@@ -103,7 +103,7 @@ public class HospitalSystemApp {
                 
                 try (Scanner scanner = new Scanner(System.in)) {
                 	
-                	System.out.print("서명할 환자 식별 코드(Pxxxx_xxx)를 입력하세요: ");
+                	System.out.print("진료 기록을 보낼 환자 식별 코드(Pxxxx_xxx)를 입력하세요: ");
                 	String patientCode = scanner.nextLine();
                 	
                     // 유효성 검사 1 - 환자 코드 유효성 확인
